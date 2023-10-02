@@ -10,13 +10,17 @@ labeled as a road edge. This file finds most of those cases.
 import argparse
 import json
 import multiprocessing
-from multiprocessing import Process, Lock
 import os
+from multiprocessing import Lock, Process
 
 import numpy as np
 
-from cfgs.config import PROCESSED_TRAIN_NO_TL, PROCESSED_VALID_NO_TL, \
-    get_default_scenario_dict, set_display_window
+from cfgs.config import (
+    PROCESSED_TRAIN_NO_TL,
+    PROCESSED_VALID_NO_TL,
+    get_default_scenario_dict,
+    set_display_window,
+)
 from nocturne import Simulation
 
 
@@ -42,8 +46,8 @@ def is_file_valid(file_list, output_file, output_file_invalid, lock=None):
     file_valid_dict = {}
     file_invalid_dict = {}
     cfg = get_default_scenario_dict()
-    cfg['start_time'] = 0
-    cfg['allow_non_vehicles'] = False
+    cfg["start_time"] = 0
+    cfg["allow_non_vehicles"] = False
     for i, file in enumerate(file_list):
         sim = Simulation(str(file), cfg)
         vehs = sim.scenario().getObjectsThatMoved()
@@ -71,22 +75,18 @@ def is_file_valid(file_list, output_file, output_file_invalid, lock=None):
         # so that we know which vehicles should be set to be experts
         # if more than 80% of the vehicles are experts, we throw the file
         # away
-        if np.sum(list(
-                veh_edge_collided.values())) / len(veh_edge_collided) < 0.8:
+        if np.sum(list(veh_edge_collided.values())) / len(veh_edge_collided) < 0.8:
             storage = file_valid_dict
         else:
             storage = file_invalid_dict
-        storage[str(file).split('/')[-1]] = [
-            key for key, val in veh_edge_collided.items() if val
-        ]
+        storage[str(file).split("/")[-1]] = [key for key, val in veh_edge_collided.items() if val]
 
-    for file, return_dict in zip([output_file, output_file_invalid],
-                                 [file_valid_dict, file_invalid_dict]):
+    for file, return_dict in zip([output_file, output_file_invalid], [file_valid_dict, file_invalid_dict]):
         if lock is not None:
             lock.acquire()
-        with open(file, 'r') as fp:
+        with open(file, "r") as fp:
             temp_dict = json.load(fp)
-        with open(file, 'w') as fp:
+        with open(file, "w") as fp:
             temp_dict.update(return_dict)
             json.dump(temp_dict, fp, indent=4)
         if lock is not None:
@@ -96,63 +96,60 @@ def is_file_valid(file_list, output_file, output_file_invalid, lock=None):
 def main():
     """See file docstring."""
     set_display_window()
-    parser = argparse.ArgumentParser(
-        description="Load and show waymo scenario data.")
+    parser = argparse.ArgumentParser(description="Load and show waymo scenario data.")
     parser.add_argument(
-        "--parallel",
-        action='store_true',
-        help="If true, split the conversion up over multiple processes")
+        "--parallel", action="store_true", help="If true, split the conversion up over multiple processes"
+    )
     parser.add_argument(
-        "--n_processes",
-        type=int,
-        default=40,
-        help="Number of processes over which to split file generation")
-    parser.add_argument("--datatype",
-                        default='train',
-                        type=str,
-                        choices=['train', 'valid'],
-                        nargs='+',
-                        help="Whether to convert, train or valid data")
+        "--n_processes", type=int, default=40, help="Number of processes over which to split file generation"
+    )
+    parser.add_argument(
+        "--datatype",
+        default="train",
+        type=str,
+        choices=["train", "valid"],
+        nargs="+",
+        help="Whether to convert, train or valid data",
+    )
 
     args = parser.parse_args()
     # TODO(eugenevinitsky) this currently assumes that we have
     # constructed the scenes without traffic lights and not
     # other scenes
     folders_to_convert = []
-    if 'train' in args.datatype:
+    if "train" in args.datatype:
         folders_to_convert.append(PROCESSED_TRAIN_NO_TL)
-    if 'valid' in args.datatype:
+    if "valid" in args.datatype:
         folders_to_convert.append(PROCESSED_VALID_NO_TL)
 
     lock = Lock()
     for folder_path in folders_to_convert:
         files = os.listdir(folder_path)
-        files = [
-            os.path.join(folder_path, file) for file in files
-            if 'tfrecord' in file
-        ]
+        files = [os.path.join(folder_path, file) for file in files if "tfrecord" in file]
 
-        output_file = os.path.join(folder_path, 'valid_files.json')
-        with open(output_file, 'w') as fp:
+        output_file = os.path.join(folder_path, "valid_files.json")
+        with open(output_file, "w") as fp:
             json.dump({}, fp)
 
-        output_file_invalid = os.path.join(folder_path, 'invalid_files.json')
-        with open(output_file_invalid, 'w') as fp:
+        output_file_invalid = os.path.join(folder_path, "invalid_files.json")
+        with open(output_file_invalid, "w") as fp:
             json.dump({}, fp)
 
         if args.parallel:
             # leave some cpus free but have at least one and don't use more than n_processes
-            num_cpus = min(max(multiprocessing.cpu_count() - 2, 1),
-                           args.n_processes)
+            num_cpus = min(max(multiprocessing.cpu_count() - 2, 1), args.n_processes)
             num_files = len(files)
             process_list = []
             for i in range(num_cpus):
-                p = Process(target=is_file_valid,
-                            args=[
-                                files[i * num_files // num_cpus:(i + 1) *
-                                      num_files // num_cpus], output_file,
-                                output_file_invalid, lock
-                            ])
+                p = Process(
+                    target=is_file_valid,
+                    args=[
+                        files[i * num_files // num_cpus : (i + 1) * num_files // num_cpus],
+                        output_file,
+                        output_file_invalid,
+                        lock,
+                    ],
+                )
                 p.start()
                 process_list.append(p)
 
@@ -162,5 +159,5 @@ def main():
             is_file_valid(files, output_file, output_file_invalid, lock=None)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

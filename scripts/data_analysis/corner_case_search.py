@@ -8,18 +8,22 @@ The cases we currently check for are:
 1) is a vehicle initialized in a colliding state with another vehicle
 2) is a vehicle initialized in a colliding state with a road edge?
 """
-from copy import deepcopy
-from pathlib import Path
 import os
 import sys
+from copy import deepcopy
+from pathlib import Path
 
 import hydra
 import imageio
 import matplotlib.pyplot as plt
 import numpy as np
 
-from cfgs.config import PROCESSED_TRAIN_NO_TL, PROJECT_PATH, \
-    get_scenario_dict, set_display_window
+from cfgs.config import (
+    PROCESSED_TRAIN_NO_TL,
+    PROJECT_PATH,
+    get_scenario_dict,
+    set_display_window,
+)
 from nocturne import Simulation
 
 
@@ -29,11 +33,11 @@ def main(cfg):
     set_display_window()
     SAVE_IMAGES = False
     MAKE_MOVIES = False
-    output_folder = 'corner_case_vis'
-    output_path = Path(PROJECT_PATH) / f'nocturne_utils/{output_folder}'
+    output_folder = "corner_case_vis"
+    output_path = Path(PROJECT_PATH) / f"nocturne_utils/{output_folder}"
     output_path.mkdir(exist_ok=True)
     files = list(os.listdir(PROCESSED_TRAIN_NO_TL))
-    files = [file for file in files if 'tfrecord' in file]
+    files = [file for file in files if "tfrecord" in file]
     # track the number of collisions at each time-step
     collide_counter = np.zeros((2, 90))
     file_has_veh_collision_counter = 0
@@ -44,13 +48,12 @@ def main(cfg):
     total_veh_counter = 0
 
     start_cfg = deepcopy(cfg)
-    start_cfg['scenario']['start_time'] = 0
-    start_cfg['scenario']['allow_non_vehicles'] = False
+    start_cfg["scenario"]["start_time"] = 0
+    start_cfg["scenario"]["allow_non_vehicles"] = False
     for file_idx, file in enumerate(files):
         found_collision = False
         edge_collision = False
-        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file),
-                         get_scenario_dict(cfg))
+        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file), get_scenario_dict(cfg))
         vehs = sim.getScenario().getObjectsThatMoved()
         # this checks if the vehicles has actually moved any distance at all
         valid_vehs = []
@@ -69,8 +72,7 @@ def main(cfg):
             for veh_index, veh in enumerate(valid_vehs):
                 collided = veh.getCollided()
                 if collided and not np.isclose(veh.getPosition().x, -10000.0):
-                    collide_counter[int(veh.collision_type) - 1,
-                                    time_index] += 1
+                    collide_counter[int(veh.collision_type) - 1, time_index] += 1
                     if int(veh.collision_type) == 2:
                         veh_edge_collided[veh_index] = True
                     if int(veh.collision_type) == 1:
@@ -88,7 +90,7 @@ def main(cfg):
                     )
                     fig = plt.figure()
                     plt.imshow(img)
-                    plt.savefig(f'{output_folder}/{file}.png')
+                    plt.savefig(f"{output_folder}/{file}.png")
                     plt.close(fig)
                 if not found_collision and collided:
                     found_collision = True
@@ -102,39 +104,45 @@ def main(cfg):
         total_edge_collision_counter += np.sum(veh_edge_collided)
         total_veh_collision_counter += np.sum(veh_veh_collided)
         initialized_collision_counter += np.sum(initialized_collided)
-        print(f'at file {file_idx} we have {collide_counter} collisions for a\
-                 ratio of {collide_counter / (file_idx + 1)}')
-        print(f'the number of files that have a veh collision at all is\
-                 {file_has_veh_collision_counter / (file_idx + 1)}')
-        print(f'the number of files that have a edge collision at all is\
-                 {file_has_edge_collision_counter / (file_idx + 1)}')
-        print(f'the fraction of vehicles that have had an edge collision\
-                is {total_edge_collision_counter / total_veh_counter}')
-        print(f'the fraction of vehicles that have had a collision at all\
-                is {(total_edge_collision_counter + total_veh_collision_counter) / total_veh_counter}'
-              )
         print(
-            f'the fraction of vehicles that are initialized in collision are \
-                {initialized_collision_counter / total_veh_counter}')
+            f"at file {file_idx} we have {collide_counter} collisions for a\
+                 ratio of {collide_counter / (file_idx + 1)}"
+        )
+        print(
+            f"the number of files that have a veh collision at all is\
+                 {file_has_veh_collision_counter / (file_idx + 1)}"
+        )
+        print(
+            f"the number of files that have a edge collision at all is\
+                 {file_has_edge_collision_counter / (file_idx + 1)}"
+        )
+        print(
+            f"the fraction of vehicles that have had an edge collision\
+                is {total_edge_collision_counter / total_veh_counter}"
+        )
+        print(
+            f"the fraction of vehicles that have had a collision at all\
+                is {(total_edge_collision_counter + total_veh_collision_counter) / total_veh_counter}"
+        )
+        print(
+            f"the fraction of vehicles that are initialized in collision are \
+                {initialized_collision_counter / total_veh_counter}"
+        )
         if found_collision and edge_collision and MAKE_MOVIES:
             movie_frames = []
             fig = plt.figure()
-            sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file),
-                             get_scenario_dict(start_cfg))
+            sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file), get_scenario_dict(start_cfg))
             vehs = sim.getScenario().getObjectsThatMoved()
             for veh in vehs:
                 veh.expert_control = True
             for time_index in range(89):
-                movie_frames.append(sim.getScenario().getImage(
-                    img_width=1600, img_height=1600))
+                movie_frames.append(sim.getScenario().getImage(img_width=1600, img_height=1600))
                 sim.step(0.1)
             movie_frames = np.array(movie_frames)
-            imageio.mimwrite(f'{output_path}/{os.path.basename(file)}.mp4',
-                             movie_frames,
-                             fps=10)
+            imageio.mimwrite(f"{output_path}/{os.path.basename(file)}.mp4", movie_frames, fps=10)
             if file_has_edge_collision_counter + file_has_veh_collision_counter > 10:
                 sys.exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

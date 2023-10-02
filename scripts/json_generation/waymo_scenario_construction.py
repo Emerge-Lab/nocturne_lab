@@ -4,9 +4,9 @@
 # LICENSE file in the root directory of this source tree.
 """Construct a scenarios.json file from a waymos protobuf."""
 
-from collections import defaultdict
-import math
 import json
+import math
+from collections import defaultdict
 from typing import Any, Dict, Iterator, Optional
 
 import tensorflow as tf
@@ -31,14 +31,11 @@ _WAYMO_ROAD_STR = {
     map_pb2.TrafficSignalLaneState.LANE_STATE_CAUTION: "caution",
     map_pb2.TrafficSignalLaneState.LANE_STATE_GO: "go",
     map_pb2.TrafficSignalLaneState.LANE_STATE_FLASHING_STOP: "flashing_stop",
-    map_pb2.TrafficSignalLaneState.LANE_STATE_FLASHING_CAUTION:
-    "flashing_caution",
+    map_pb2.TrafficSignalLaneState.LANE_STATE_FLASHING_CAUTION: "flashing_caution",
 }
 
 
-def _parse_object_state(
-        states: scenario_pb2.ObjectState,
-        final_state: scenario_pb2.ObjectState) -> Dict[str, Any]:
+def _parse_object_state(states: scenario_pb2.ObjectState, final_state: scenario_pb2.ObjectState) -> Dict[str, Any]:
     """Construct a dict representing the trajectory and goals of an object.
 
     Args:
@@ -50,33 +47,19 @@ def _parse_object_state(
         Dict[str, Any]: Dict representing an object.
     """
     return {
-        "position": [{
-            "x": state.center_x,
-            "y": state.center_y
-        } if state.valid else {
-            "x": ERR_VAL,
-            "y": ERR_VAL
-        } for state in states],
-        "width":
-        final_state.width,
-        "length":
-        final_state.length,
-        "heading": [
-            math.degrees(state.heading) if state.valid else ERR_VAL
+        "position": [
+            {"x": state.center_x, "y": state.center_y} if state.valid else {"x": ERR_VAL, "y": ERR_VAL}
             for state in states
-        ],  # Use rad here?
-        "velocity": [{
-            "x": state.velocity_x,
-            "y": state.velocity_y
-        } if state.valid else {
-            "x": ERR_VAL,
-            "y": ERR_VAL
-        } for state in states],
+        ],
+        "width": final_state.width,
+        "length": final_state.length,
+        "heading": [math.degrees(state.heading) if state.valid else ERR_VAL for state in states],  # Use rad here?
+        "velocity": [
+            {"x": state.velocity_x, "y": state.velocity_y} if state.valid else {"x": ERR_VAL, "y": ERR_VAL}
+            for state in states
+        ],
         "valid": [state.valid for state in states],
-        "goalPosition": {
-            "x": final_state.center_x,
-            "y": final_state.center_y
-        }
+        "goalPosition": {"x": final_state.center_x, "y": final_state.center_y},
     }
 
 
@@ -85,9 +68,9 @@ def _init_tl_object(track):
     returned_dict = {}
     for lane_state in track.lane_states:
         returned_dict[lane_state.lane] = {
-            'state': _WAYMO_ROAD_STR[lane_state.state],
-            'x': lane_state.stop_point.x,
-            'y': lane_state.stop_point.y
+            "state": _WAYMO_ROAD_STR[lane_state.state],
+            "x": lane_state.stop_point.x,
+            "y": lane_state.stop_point.y,
         }
     return returned_dict
 
@@ -115,22 +98,13 @@ def _init_object(track: scenario_pb2.Track) -> Optional[Dict[str, Any]]:
 def _init_road(map_feature: map_pb2.MapFeature) -> Optional[Dict[str, Any]]:
     """Convert an element of the map protobuf to a dict representing its coordinates and type."""
     feature = map_feature.WhichOneof("feature_data")
-    if feature == 'stop_sign':
-        p = getattr(map_feature,
-                    map_feature.WhichOneof("feature_data")).position
+    if feature == "stop_sign":
+        p = getattr(map_feature, map_feature.WhichOneof("feature_data")).position
         geometry = [{"x": p.x, "y": p.y}]
-    elif feature != 'crosswalk' and feature != 'speed_bump':
-        geometry = [{
-            "x": p.x,
-            "y": p.y
-        } for p in getattr(map_feature, map_feature.WhichOneof(
-            "feature_data")).polyline]
+    elif feature != "crosswalk" and feature != "speed_bump":
+        geometry = [{"x": p.x, "y": p.y} for p in getattr(map_feature, map_feature.WhichOneof("feature_data")).polyline]
     else:
-        geometry = [{
-            "x": p.x,
-            "y": p.y
-        } for p in getattr(map_feature, map_feature.WhichOneof(
-            "feature_data")).polygon]
+        geometry = [{"x": p.x, "y": p.y} for p in getattr(map_feature, map_feature.WhichOneof("feature_data")).polygon]
     return {
         "geometry": geometry,
         "type": map_feature.WhichOneof("feature_data"),
@@ -146,9 +120,7 @@ def load_protobuf(protobuf_path: str) -> Iterator[scenario_pb2.Scenario]:
         yield scenario
 
 
-def waymo_to_scenario(scenario_path: str,
-                      protobuf: scenario_pb2.Scenario,
-                      no_tl: bool = False) -> None:
+def waymo_to_scenario(scenario_path: str, protobuf: scenario_pb2.Scenario, no_tl: bool = False) -> None:
     """Dump a JSON File containing the protobuf parsed into the right format.
 
     Args
@@ -164,23 +136,18 @@ def waymo_to_scenario(scenario_path: str,
     # place the initial position of the vehicles
 
     # Construct the traffic light states
-    tl_dict = defaultdict(lambda: {
-        'state': [],
-        'x': [],
-        'y': [],
-        'time_index': []
-    })
-    all_keys = ['state', 'x', 'y']
+    tl_dict = defaultdict(lambda: {"state": [], "x": [], "y": [], "time_index": []})
+    all_keys = ["state", "x", "y"]
     i = 0
     for dynamic_map_state in protobuf.dynamic_map_states:
         traffic_light_dict = _init_tl_object(dynamic_map_state)
         # there is a traffic light but we don't want traffic light scenes so just return
-        if (no_tl and len(traffic_light_dict) > 0):
+        if no_tl and len(traffic_light_dict) > 0:
             return
         for id, value in traffic_light_dict.items():
             for state_key in all_keys:
                 tl_dict[id][state_key].append(value[state_key])
-            tl_dict[id]['time_index'].append(i)
+            tl_dict[id]["time_index"].append(i)
         i += 1
 
     # Construct the object states
@@ -197,11 +164,6 @@ def waymo_to_scenario(scenario_path: str,
         if road is not None:
             roads.append(road)
 
-    scenario = {
-        "name": scenario_path.split('/')[-1],
-        "objects": objects,
-        "roads": roads,
-        "tl_states": tl_dict
-    }
+    scenario = {"name": scenario_path.split("/")[-1], "objects": objects, "roads": roads, "tl_states": tl_dict}
     with open(scenario_path, "w") as f:
         json.dump(scenario, f)

@@ -9,7 +9,6 @@ repos:
   - id: check-yaml
   - id: sort-simple-yaml
   - id: check-json
-  - id: pretty-format-json
   - id: check-merge-conflict
   - id: check-symlinks
   - id: debug-statements
@@ -40,17 +39,13 @@ repos:
   rev: 6.1.0
   hooks:
   - id: flake8
-    args: [--max-line-length=120]
-- repo: https://github.com/PyCQA/pylint
-  rev: v3.0.0
-  hooks:
-  - id: pylint
-    args: [--max-line-length=120]
+    args: [--max-line-length=120, --extend-ignore=E203]
 - repo: https://github.com/PyCQA/pydocstyle
   rev: 6.3.0
   hooks:
   - id: pydocstyle
-    args: [--convention=google]
+    args: [--convention=numpy]
+    additional_dependencies: [tomli]
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
   rev: v2.10.0
   hooks:
@@ -58,3 +53,10 @@ repos:
     args: [--autofix, --no-sort]
   - id: pretty-format-yaml
     args: [--autofix]
+- repo: local
+  hooks:
+  - id: pylint
+    name: pylint
+    entry: poetry run pylint
+    language: system
+    types: [python]

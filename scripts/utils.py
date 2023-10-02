@@ -14,7 +14,7 @@ class Overrides(object):
 
     def add(self, key, values):
         """Add each of the desired key value pairs into a dict."""
-        value = ','.join(str(v) for v in values)
+        value = ",".join(str(v) for v in values)
         assert key not in self.kvs
         self.kvs[key] = value
 
@@ -22,5 +22,5 @@ class Overrides(object):
         """Append the keys together into a command that can be run."""
         cmd = []
         for k, v in self.kvs.items():
-            cmd.append(f'{k}={v}')
+            cmd.append(f"{k}={v}")
         return cmd

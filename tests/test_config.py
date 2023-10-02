@@ -3,8 +3,8 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 """Test configurations passed to the scenario."""
-from hydra.core.global_hydra import GlobalHydra
 from hydra import compose, initialize
+from hydra.core.global_hydra import GlobalHydra
 
 from cfgs.config import PROJECT_PATH, get_scenario_dict
 from nocturne import Simulation
@@ -24,15 +24,16 @@ def test_custom_config():
     GlobalHydra.instance().clear()
     initialize(config_path="../cfgs/")
     cfg = compose(config_name="config")
-    cfg['scenario'].update({
-        'max_visible_objects': 3,
-        'max_visible_road_points': 14,
-        'max_visible_traffic_lights': 15,
-        'max_visible_stop_signs': 92,
-    })
-    scenario_path = str(PROJECT_PATH / 'tests/large_file_tfrecord.json')
-    sim = Simulation(scenario_path=scenario_path,
-                     config=get_scenario_dict(cfg))
+    cfg["scenario"].update(
+        {
+            "max_visible_objects": 3,
+            "max_visible_road_points": 14,
+            "max_visible_traffic_lights": 15,
+            "max_visible_stop_signs": 92,
+        }
+    )
+    scenario_path = str(PROJECT_PATH / "tests/large_file_tfrecord.json")
+    sim = Simulation(scenario_path=scenario_path, config=get_scenario_dict(cfg))
     scenario = sim.getScenario()
     assert scenario.getMaxNumVisibleObjects() == 3
     assert scenario.getMaxNumVisibleRoadPoints() == 14
@@ -46,5 +47,5 @@ def main():
     test_custom_config()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

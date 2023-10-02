@@ -3,9 +3,9 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 """Test expert action computation from inverse dynamics."""
-from hydra.core.global_hydra import GlobalHydra
-from hydra import compose, initialize
 import numpy as np
+from hydra import compose, initialize
+from hydra.core.global_hydra import GlobalHydra
 
 from cfgs.config import PROJECT_PATH, get_scenario_dict
 from nocturne import Simulation
@@ -30,11 +30,10 @@ def _create_sim(file_path, expert_control):
 
 def test_inverse_dynamics():
     """Check that expert actions are computed correctly from inverse dynamics."""
-    file_path = str(PROJECT_PATH / 'tests/large_file_tfrecord.json')
+    file_path = str(PROJECT_PATH / "tests/large_file_tfrecord.json")
 
     # create a ground truth sim that will replay expert actions
-    sim_ground_truth, objects_ground_truth = _create_sim(file_path,
-                                                         expert_control=True)
+    sim_ground_truth, objects_ground_truth = _create_sim(file_path, expert_control=True)
     id2obj_ground_truth = {obj.id: obj for obj in objects_ground_truth}
     # create a test sim that will replay actions from inverse dynamics
     sim_test, objects_test = _create_sim(file_path, expert_control=False)
@@ -76,5 +75,5 @@ def test_inverse_dynamics():
             obj_test.speed = obj_ground_truth.speed
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_inverse_dynamics()

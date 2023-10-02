@@ -26,11 +26,10 @@ def run_analysis(cfg, files):
     """
     observed_accels = []
     num_vehicles = []
-    cfg['start_time'] = 0
-    cfg['allow_non_vehicles'] = False
+    cfg["start_time"] = 0
+    cfg["allow_non_vehicles"] = False
     for file_idx, file in enumerate(files):
-        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file),
-                         get_scenario_dict(cfg))
+        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file), get_scenario_dict(cfg))
         vehs = sim.scenario().getObjectsThatMoved()
         # this checks if the vehicles has actually moved any distance at all
         valid_vehs = []
@@ -45,12 +44,9 @@ def run_analysis(cfg, files):
                 veh_speed = sim.scenario().getExpertSpeeds(0, veh.id)
                 veh_speed = np.linalg.norm([veh_speed.x, veh_speed.y])
                 if not np.isclose(veh.position.x, -10000.0):
-                    prev_speeds.append(
-                        (veh_speed, True, [veh.position.x, veh.position.y], 0))
+                    prev_speeds.append((veh_speed, True, [veh.position.x, veh.position.y], 0))
                 else:
-                    prev_speeds.append(
-                        (veh_speed, False, [veh.position.x,
-                                            veh.position.y], 0))
+                    prev_speeds.append((veh_speed, False, [veh.position.x, veh.position.y], 0))
         num_vehicles.append(len(valid_vehs))
         sim.step(0.1)
         for i in range(1, 90):
@@ -59,9 +55,7 @@ def run_analysis(cfg, files):
                 veh_speed = sim.scenario().getExpertSpeeds(i, veh.id)
                 veh_speed = veh_speed.norm()
                 if np.isclose(veh.position.x, -10000.0):
-                    prev_speeds[veh_index] = (veh_speed, False,
-                                              [veh.position.x,
-                                               veh.position.y], i)
+                    prev_speeds[veh_index] = (veh_speed, False, [veh.position.x, veh.position.y], i)
                 else:
                     # approximate the accel using an euler step but only
                     # if the prior step was a step where the agent
@@ -69,9 +63,7 @@ def run_analysis(cfg, files):
                     if prev_speeds[veh_index][1]:
                         accel = (veh_speed - prev_speeds[veh_index][0]) / 0.1
                         observed_accels.append(accel)
-                    prev_speeds[veh_index] = (veh_speed, True,
-                                              [veh.position.x,
-                                               veh.position.y], i)
+                    prev_speeds[veh_index] = (veh_speed, True, [veh.position.x, veh.position.y], i)
             sim.step(0.1)
 
         if file_idx > 300:
@@ -83,14 +75,14 @@ def run_analysis(cfg, files):
 def analyze_accels(cfg):
     """Plot the expert accels and number of observed moving vehicles."""
     f_path = PROCESSED_TRAIN_NO_TL
-    with open(os.path.join(f_path, 'valid_files.txt')) as file:
+    with open(os.path.join(f_path, "valid_files.txt")) as file:
         files = [line.strip() for line in file]
     observed_accels_valid, num_vehicles_valid = run_analysis(cfg, files)
-    with open(os.path.join(f_path, 'invalid_files.txt')) as file:
+    with open(os.path.join(f_path, "invalid_files.txt")) as file:
         files = [line.strip() for line in file]
     _, num_vehicles_invalid = run_analysis(cfg, files)
 
-    output_path = os.path.join(PROJECT_PATH, 'nocturne_utils/data_analysis')
+    output_path = os.path.join(PROJECT_PATH, "nocturne_utils/data_analysis")
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     observed_accels = np.array(observed_accels_valid)
@@ -99,32 +91,32 @@ def analyze_accels(cfg):
     observed_accels = observed_accels[np.abs(observed_accels) < 5]
     plt.figure()
     plt.hist(observed_accels)
-    plt.savefig(os.path.join(output_path, 'observed_accels.png'))
+    plt.savefig(os.path.join(output_path, "observed_accels.png"))
     plt.figure()
     plt.hist(
         num_vehicles_valid,
         bins=30,
         density=True,
-        histtype='step',
+        histtype="step",
         cumulative=True,
     )
     plt.hist(
         num_vehicles_invalid,
         bins=30,
         density=True,
-        histtype='step',
+        histtype="step",
         cumulative=True,
     )
-    plt.legend(['valid', 'invalid'])
-    plt.savefig(os.path.join(output_path, 'num_vehs_cdf.png'))
+    plt.legend(["valid", "invalid"])
+    plt.savefig(os.path.join(output_path, "num_vehs_cdf.png"))
     plt.figure()
-    plt.hist(num_vehicles_valid, bins=30, alpha=0.5, color='b')
-    plt.axvline(np.mean(num_vehicles_valid), color='b', label='_nolegend_')
-    plt.hist(num_vehicles_invalid, bins=30, alpha=0.5, color='r')
-    plt.axvline(np.mean(num_vehicles_invalid), color='r', label='_nolegend_')
-    plt.legend(['valid', 'invalid'])
-    plt.savefig(os.path.join(output_path, 'num_vehs_hist.png'))
+    plt.hist(num_vehicles_valid, bins=30, alpha=0.5, color="b")
+    plt.axvline(np.mean(num_vehicles_valid), color="b", label="_nolegend_")
+    plt.hist(num_vehicles_invalid, bins=30, alpha=0.5, color="r")
+    plt.axvline(np.mean(num_vehicles_invalid), color="r", label="_nolegend_")
+    plt.legend(["valid", "invalid"])
+    plt.savefig(os.path.join(output_path, "num_vehs_hist.png"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     analyze_accels()

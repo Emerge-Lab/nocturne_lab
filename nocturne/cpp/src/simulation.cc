@@ -35,7 +35,7 @@ void Simulation::Render() {
 
     // draw scenario
     render_window_->draw(*scenario_);
-  
+
     // draw frames per seconds on screen
     sf::Time elapsed = clock_.restart();
     float fps = 1.0f / elapsed.asSeconds();

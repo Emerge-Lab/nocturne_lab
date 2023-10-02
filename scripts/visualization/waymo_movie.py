@@ -20,8 +20,7 @@ def main(cfg):
     set_display_window()
     _ = plt.figure()
     files = os.listdir(PROCESSED_TRAIN_NO_TL)
-    file = os.path.join(PROCESSED_TRAIN_NO_TL,
-                        files[np.random.randint(len(files))])
+    file = os.path.join(PROCESSED_TRAIN_NO_TL, files[np.random.randint(len(files))])
     sim = Simulation(file, get_scenario_dict(cfg))
     frames = []
     scenario = sim.getScenario()
@@ -38,10 +37,10 @@ def main(cfg):
         sim.step(0.1)
 
     movie_frames = np.array(frames)
-    output_path = f'{os.path.basename(file)}.mp4'
+    output_path = f"{os.path.basename(file)}.mp4"
     imageio.mimwrite(output_path, movie_frames, fps=30)
-    print('>', output_path)
+    print(">", output_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

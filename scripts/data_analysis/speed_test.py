@@ -11,7 +11,7 @@ import hydra
 import numpy as np
 
 from cfgs.config import PROCESSED_TRAIN_NO_TL, get_scenario_dict, set_display_window
-from nocturne import Simulation, Action
+from nocturne import Action, Simulation
 
 
 def run_speed_test(files, cfg):
@@ -27,8 +27,7 @@ def run_speed_test(files, cfg):
     """
     times_list = []
     for file in files:
-        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file),
-                         get_scenario_dict(cfg))
+        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file), get_scenario_dict(cfg))
         vehs = sim.scenario().getObjectsThatMoved()
         scenario = sim.getScenario()
         veh = vehs[np.random.randint(len(vehs))]
@@ -37,20 +36,19 @@ def run_speed_test(files, cfg):
         veh.apply_action(Action(1.0, 1.0, 1.0))
         sim.step(0.1)
         times_list.append(time.perf_counter() - t)
-    print('avg, std. time to get obs is {}, {}'.format(np.mean(times_list),
-                                                       np.std(times_list)))
+    print("avg, std. time to get obs is {}, {}".format(np.mean(times_list), np.std(times_list)))
 
 
 @hydra.main(config_path="../../cfgs/", config_name="config")
 def analyze_accels(cfg):
     """Plot the expert accels and number of observed moving vehicles."""
     f_path = PROCESSED_TRAIN_NO_TL
-    with open(os.path.join(f_path, 'valid_files.json')) as file:
+    with open(os.path.join(f_path, "valid_files.json")) as file:
         valid_veh_dict = json.load(file)
         files = list(valid_veh_dict.keys())
     run_speed_test(files[0:10], cfg)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     set_display_window()
     analyze_accels()

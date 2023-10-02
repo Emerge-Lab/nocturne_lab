@@ -3,13 +3,13 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 """Wrappers and env constructors for the environments."""
-from gym.spaces import Box
 import numpy as np
+from gym.spaces import Box
 
 from nocturne.envs import BaseEnv
 
 
-class OnPolicyPPOWrapper(object):
+class OnPolicyPPOWrapper:
     """Wrapper to make env compatible with On-Policy code."""
 
     def __init__(self, env, use_images=False):
@@ -29,10 +29,7 @@ class OnPolicyPPOWrapper(object):
         self.agent_ids = []
         self.feature_shape = obs_dict[0].shape
         self.share_observation_space = [
-            Box(low=-np.inf,
-                high=+np.inf,
-                shape=self.feature_shape,
-                dtype=np.float32) for _ in range(self.n)
+            Box(low=-np.inf, high=+np.inf, shape=self.feature_shape, dtype=np.float32) for _ in range(self.n)
         ]
 
     @property
@@ -57,13 +54,13 @@ class OnPolicyPPOWrapper(object):
         info_n = []
         for key in self.agent_ids:
             if isinstance(next_obses[key], dict):
-                obs_n.append(next_obses[key]['features'])
+                obs_n.append(next_obses[key]["features"])
             else:
                 obs_n.append(next_obses[key])
             rew_n.append([rew[key]])
             done_n.append(done[key])
             agent_info = info[key]
-            agent_info['individual_reward'] = rew[key]
+            agent_info["individual_reward"] = rew[key]
             info_n.append(agent_info)
         return obs_n, rew_n, done_n, info_n
 
@@ -74,10 +71,10 @@ class OnPolicyPPOWrapper(object):
         self.agent_ids = []
         for key in obses.keys():
             self.agent_ids.append(key)
-            if not hasattr(self, 'agent_key'):
+            if not hasattr(self, "agent_key"):
                 self.agent_key = key
             if isinstance(obses[key], dict):
-                obs_n.append(obses[key]['features'])
+                obs_n.append(obses[key]["features"])
             else:
                 obs_n.append(obses[key])
         return obs_n

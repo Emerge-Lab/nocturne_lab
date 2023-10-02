@@ -24,7 +24,7 @@ add_library(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/geometry/polygon.cc
 )
 target_include_directories(
-  nocturne_geometry 
+  nocturne_geometry
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )

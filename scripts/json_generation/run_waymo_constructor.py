@@ -4,13 +4,20 @@
 # LICENSE file in the root directory of this source tree.
 """Utils for converting TFRecords into Nocturne compatible JSON."""
 import argparse
-from pathlib import Path
-import os
 import multiprocessing
+import os
+from pathlib import Path
 
-from cfgs.config import TRAIN_DATA_PATH, VALID_DATA_PATH, PROCESSED_TRAIN_NO_TL, \
-    PROCESSED_VALID_NO_TL, PROCESSED_TRAIN, PROCESSED_VALID
 import waymo_scenario_construction as waymo
+
+from cfgs.config import (
+    PROCESSED_TRAIN,
+    PROCESSED_TRAIN_NO_TL,
+    PROCESSED_VALID,
+    PROCESSED_VALID_NO_TL,
+    TRAIN_DATA_PATH,
+    VALID_DATA_PATH,
+)
 
 
 def convert_files(args, files, output_dir, rank):
@@ -27,15 +34,12 @@ def convert_files(args, files, output_dir, rank):
     for file in files:
         inner_count = 0
         for data in waymo.load_protobuf(str(file)):
-            file_name = os.path.basename(file).split(
-                '.')[1] + f'_{inner_count}.json'
+            file_name = os.path.basename(file).split(".")[1] + f"_{inner_count}.json"
             # this file is useful for debugging
             if args.output_txt and cnt == 0 and rank == 0:
-                with open(os.path.basename(file).split('.')[1] + '.txt',
-                          'w') as f:
+                with open(os.path.basename(file).split(".")[1] + ".txt", "w") as f:
                     f.write(str(data))
-            waymo.waymo_to_scenario(os.path.join(output_dir, file_name), data,
-                                    args.no_tl)
+            waymo.waymo_to_scenario(os.path.join(output_dir, file_name), data, args.no_tl)
             inner_count += 1
             cnt += 1
             if cnt >= args.num and not args.all_files:
@@ -45,53 +49,43 @@ def convert_files(args, files, output_dir, rank):
 
 def main():
     """Run the json generators."""
-    parser = argparse.ArgumentParser(
-        description="Load and show waymo scenario data.")
-    parser.add_argument("--file",
-                        type=str,
-                        default=os.path.join(
-                            TRAIN_DATA_PATH,
-                            'training.tfrecord-00995-of-01000'))
+    parser = argparse.ArgumentParser(description="Load and show waymo scenario data.")
+    parser.add_argument("--file", type=str, default=os.path.join(TRAIN_DATA_PATH, "training.tfrecord-00995-of-01000"))
     parser.add_argument("--num", type=int, default=1)
-    parser.add_argument("--output_txt",
-                        action='store_true',
-                        help='output a txt version of one of the protobufs')
-    parser.add_argument("--all_files",
-                        action='store_true',
-                        help='If true, iterate through the whole dataset')
-    parser.add_argument("--no_tl",
-                        action='store_true',
-                        help="If true, do not generate JSON files\
-             that have a traffic light in them")
+    parser.add_argument("--output_txt", action="store_true", help="output a txt version of one of the protobufs")
+    parser.add_argument("--all_files", action="store_true", help="If true, iterate through the whole dataset")
     parser.add_argument(
-        "--parallel",
-        action='store_true',
-        help="If true, split the conversion up over multiple processes")
-    parser.add_argument("--datatype",
-                        default='train',
-                        type=str,
-                        choices=['train', 'valid'],
-                        nargs='+',
-                        help="Whether to convert, train or valid data")
+        "--no_tl",
+        action="store_true",
+        help="If true, do not generate JSON files\
+             that have a traffic light in them",
+    )
+    parser.add_argument(
+        "--parallel", action="store_true", help="If true, split the conversion up over multiple processes"
+    )
+    parser.add_argument(
+        "--datatype",
+        default="train",
+        type=str,
+        choices=["train", "valid"],
+        nargs="+",
+        help="Whether to convert, train or valid data",
+    )
 
     args = parser.parse_args()
     folders_to_convert = []
-    if 'train' in args.datatype:
-        folders_to_convert.append(
-            (TRAIN_DATA_PATH,
-             PROCESSED_TRAIN_NO_TL if args.no_tl else PROCESSED_TRAIN))
-    if 'valid' in args.datatype:
-        folders_to_convert.append(
-            (VALID_DATA_PATH,
-             PROCESSED_VALID_NO_TL if args.no_tl else PROCESSED_VALID))
+    if "train" in args.datatype:
+        folders_to_convert.append((TRAIN_DATA_PATH, PROCESSED_TRAIN_NO_TL if args.no_tl else PROCESSED_TRAIN))
+    if "valid" in args.datatype:
+        folders_to_convert.append((VALID_DATA_PATH, PROCESSED_VALID_NO_TL if args.no_tl else PROCESSED_VALID))
 
     for folder_path, output_dir in folders_to_convert:
         if args.num > 1 or args.all_files:
-            files = list(Path(folder_path).glob('*tfrecord*'))
+            files = list(Path(folder_path).glob("*tfrecord*"))
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
             if not args.all_files:
-                files = files[0:args.num]
+                files = files[0 : args.num]
 
         else:
             output_dir = os.getcwd()
@@ -105,10 +99,8 @@ def main():
             for i in range(num_cpus):
                 p = multiprocessing.Process(
                     target=convert_files,
-                    args=[
-                        args, files[i * num_files // num_cpus:(i + 1) *
-                                    num_files // num_cpus], output_dir, i
-                    ])
+                    args=[args, files[i * num_files // num_cpus : (i + 1) * num_files // num_cpus], output_dir, i],
+                )
                 p.start()
                 process_list.append(p)
 

@@ -36,7 +36,7 @@ The corresponding paper is available at: [https://arxiv.org/abs/2206.09889](http
 
 ## Dependencies
 
-[CMake](https://cmake.org/) is required to compile the C++ library. 
+[CMake](https://cmake.org/) is required to compile the C++ library.
 
 Run `cmake --version` to see whether CMake is already installed in your environment. If not, refer to the CMake website instructions for installation, or you can use:
 
@@ -92,7 +92,7 @@ python setup.py develop
 
 If you are not using Conda, simply run the last command to build and install Nocturne at your default Python path.
 
-You should then be all set to use the library. To find an example of constructing a Gym environment, using a basic Simulation, or rendering scenes, go to 
+You should then be all set to use the library. To find an example of constructing a Gym environment, using a basic Simulation, or rendering scenes, go to
 ```examples``` and run respectively, ```create_env.py```, ```nocturne_functions.py``` or ```rendering.py```.
 
 Python tests can be run with `pytest`.

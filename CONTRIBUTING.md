@@ -29,7 +29,7 @@ Meta has a [bounty program](https://www.facebook.com/whitehat/) for the safe
 disclosure of security bugs. In those cases, please go through the process
 outlined on that page and do not file a public issue.
 
-## Coding Style  
+## Coding Style
 We provide a style file for the python code that can be run by running ```flake8 .``` and then ```pydocstyle .``` from the root folder. Pull Requests must pass both of these as well as the unit tests in the ```tests``` folder to be reviewed.
 
 ## License
