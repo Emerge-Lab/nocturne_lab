@@ -50,3 +50,6 @@ configs.json
 
 # poetry
 poetry.lock
+
+# Static doc files
+!docs/source/_static/*
