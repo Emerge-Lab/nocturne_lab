@@ -53,3 +53,6 @@ poetry.lock
 
 # Static doc files
 !docs/source/_static/*
+
+# wandb
+wandb
