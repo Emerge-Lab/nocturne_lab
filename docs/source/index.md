@@ -13,6 +13,10 @@ self
 :maxdepth: 1
 :hidden:
 :caption: Tutorial
+01_data_structure
+02_nocturne_concepts
+03_basic_rl_usage
+04_ppo_with_sb3
 ```
 
 ```{toctree}

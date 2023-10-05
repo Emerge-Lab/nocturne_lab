@@ -56,10 +56,11 @@ repos:
   - id: nbqa-pyupgrade
     args: [--py310-plus]
   - id: nbqa-black
+    args: [--line-length=120]
   - id: nbqa-isort
     args: [--profile=black]
   - id: nbqa-flake8
-    args: [--extend-ignore=E203]
+    args: [--max-line-length=120, --extend-ignore=E203]
 - repo: local
   hooks:
   - id: pylint
