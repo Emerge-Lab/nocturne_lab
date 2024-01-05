@@ -108,6 +108,36 @@ void RoadLine::InitRoadPoints() {
     // Use itself as neighbor for the last point.
     road_points_.emplace_back(geometry_points_.back(), geometry_points_.back(),
                               road_type_);
+  
+    // road_points_.emplace_back(geometry_points_[num_sampled_points - 2], geometry_points_.back(), road_type_); // Create the last road line
+    // road_points_.emplace_back(geometry_points_.back(), geometry_points_.back(), road_type_); // Use itself as neighbor for the last point.
+
+    // This is the same logic as before but more efficient without creating a new vector
+    // But I am using the above logic for now to make it simple to debug. 
+    // The missing edges bug is a problem in both logics
+
+    // while( j < num_sampled_points)
+    // {
+    //   int64_t j_1 = j + 1;
+    //   while (j_1 < num_sampled_points && skip[j_1]) {
+    //       j_1++;
+    //   }
+    //   if (j_1 == num_sampled_points) {
+
+    //     if (j != num_sampled_points - 1){
+    //       // std::cout<<"making an edge from "<<j<<" to "<<num_sampled_points - 1<<std::endl;
+    //       road_points_.emplace_back(geometry_points_[j * sample_every_n_],
+    //                                 geometry_points_.back(), road_type_);
+    //     }
+    //     break;
+    //   }
+    //   std::cout<<"making an edge from "<<j<<" to "<<j_1<<std::endl;
+    //   road_points_.emplace_back(geometry_points_[j * sample_every_n_],
+    //                                       geometry_points_[(j_1) * sample_every_n_],
+    //                                       road_type_);
+    //   j = j_1;
+    // }
+
   }
    else {
     for (int64_t i = 0; i < num_sampled_points - 2; ++i) {

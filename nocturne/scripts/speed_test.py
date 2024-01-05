@@ -57,31 +57,7 @@ def run_speed_test(files, cfg):
         times_list.append(time.perf_counter() - t)
     print('avg, std. time to get obs is {}, {}'.format(np.mean(times_list),
                                                        np.std(times_list)))
-    # print FPS
-    print('avg, std. FPS is {}, {}'.format(1 / np.mean(times_list),
-                                           np.std(times_list)))
-    
 
-    times_list = []
-    for file in tqdm(files):
-        sim = Simulation(os.path.join(PROCESSED_TRAIN_NO_TL, file),
-                         get_scenario_dict(cfg))
-        vehs = sim.scenario().getObjectsThatMoved()
-        scenario = sim.getScenario()
-        veh = vehs[np.random.randint(len(vehs))]
-        t = time.perf_counter()
-        for i in range(80):
-            _ = scenario.flattened_visible_state(veh, 80, (180 / 180) * np.pi)
-            veh.apply_action(Action(1.0, 1.0, 1.0))
-            sim.step(0.1)
-        times_list.append((time.perf_counter() - t)/80)
-    
-    print('avg, std. time to get obs (continuous) is {}, {}'.format(np.mean(times_list),
-                                                       np.std(times_list)))
-    # print FPS
-    print('avg, std. FPS (continuous) is {}, {}'.format(1 / np.mean(times_list),
-                                           np.std(times_list)))
-    
 
 @hydra.main(config_path="../../configs", config_name="env_config")
 def analyze_accels(cfg):
