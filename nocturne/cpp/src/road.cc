@@ -90,7 +90,7 @@ void RoadLine::InitRoadPoints() {
     skip[0] = false;
     skip[num_sampled_points - 1] = false;
     std::vector<geometry::Vector2D> new_geometry_points; // This list stores the points that are not skipped
-    while (j < num_sampled_points)
+    while (j < num_sampled_points - 1)
     {
       if (!skip[j])
       {
@@ -102,9 +102,15 @@ void RoadLine::InitRoadPoints() {
     {
       road_points_.emplace_back(new_geometry_points[i], new_geometry_points[i + 1], road_type_); // Create the road lines
     }
+    const int64_t p = (num_sampled_points - 2) * sample_every_n_;
+    road_points_.emplace_back(geometry_points_[p], geometry_points_.back(),
+                              road_type_);
+    // Use itself as neighbor for the last point.
+    road_points_.emplace_back(geometry_points_.back(), geometry_points_.back(),
+                              road_type_);
   
     // road_points_.emplace_back(geometry_points_[num_sampled_points - 2], geometry_points_.back(), road_type_); // Create the last road line
-    road_points_.emplace_back(geometry_points_.back(), geometry_points_.back(), road_type_); // Use itself as neighbor for the last point.
+    // road_points_.emplace_back(geometry_points_.back(), geometry_points_.back(), road_type_); // Use itself as neighbor for the last point.
 
     // This is the same logic as before but more efficient without creating a new vector
     // But I am using the above logic for now to make it simple to debug. 

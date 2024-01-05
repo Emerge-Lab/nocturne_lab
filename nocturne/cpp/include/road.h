@@ -73,7 +73,7 @@ class RoadLine : public sf::Drawable {
 
   RoadLine(RoadType road_type,
            const std::initializer_list<geometry::Vector2D>& geometry_points,
-           int64_t sample_every_n = 1, bool check_collision = false, float_t reducing_threshold = 0.01)
+           int64_t sample_every_n = 1, bool check_collision = false, float_t reducing_threshold = 0.0)
       : road_type_(road_type),
         geometry_points_(geometry_points),
         sample_every_n_(sample_every_n),
@@ -85,7 +85,7 @@ class RoadLine : public sf::Drawable {
 
   RoadLine(RoadType road_type,
            const std::vector<geometry::Vector2D>& geometry_points,
-           int64_t sample_every_n = 1, bool check_collision = false, float_t reducing_threshold = 0.01)
+           int64_t sample_every_n = 1, bool check_collision = false, float_t reducing_threshold = 0.0)
       : road_type_(road_type),
         geometry_points_(geometry_points),
         sample_every_n_(sample_every_n),
@@ -97,7 +97,7 @@ class RoadLine : public sf::Drawable {
 
   RoadLine(RoadType road_type,
            std::vector<geometry::Vector2D>&& geometry_points,
-           int64_t sample_every_n = 1, bool check_collision = false, float_t reducing_threshold = 0.01)
+           int64_t sample_every_n = 1, bool check_collision = false, float_t reducing_threshold = 0.0)
       : road_type_(road_type),
         geometry_points_(std::move(geometry_points)),
         sample_every_n_(sample_every_n),
