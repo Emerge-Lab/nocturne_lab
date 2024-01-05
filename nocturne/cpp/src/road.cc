@@ -48,52 +48,90 @@ void RoadLine::InitRoadPoints() {
       (num_segments + sample_every_n_ - 1) / sample_every_n_ + 1;
   road_points_.reserve(num_sampled_points);
   if (road_type_ == RoadType::kLane || road_type_ == RoadType::kRoadEdge || road_type_ == RoadType::kRoadLine) {
-    int64_t start = 0;
+    std::vector<bool> skip(num_sampled_points, false); // This list tracks the points that are skipped
     int64_t j = 0;
-    while (j < num_sampled_points - 2) {
-      auto point1 = geometry_points_[j * sample_every_n_];
-      auto point2 = geometry_points_[(j + 1) * sample_every_n_];
-      auto point3 = geometry_points_[(j + 2) * sample_every_n_];
-      float_t shoelace_area = (point1.x() - point3.x()) * (point2.y() - point1.y()) - (point1.x() - point2.x()) * (point3.y() - point1.y());
-      if(shoelace_area < reducing_threshold_)
-        j++;
-      else
+    bool skipChanged = true; // This is used to check if the skip list has changed in the last iteration
+    while (skipChanged) // This loop runs O(N^2) in worst case, but it is very fast in practice probably O(NlogN)
+    {
+      skipChanged = false; // Reset the skipChanged flag
+      j = 0;
+      while (j < num_sampled_points - 1)
       {
-        if(j!=start)
-        {
-          road_points_.emplace_back(geometry_points_[start * sample_every_n_],
-                                    geometry_points_[j * sample_every_n_],
-                                    road_type_);
-          start = j;
-        }
-        else
-        {
-          road_points_.emplace_back(geometry_points_[j * sample_every_n_],
-                                    geometry_points_[(j + 1) * sample_every_n_],
-                                    road_type_);
-          start = ++j;
-        }
-      } 
+          int64_t j_1 = j + 1; // j_1 is the next point that is not skipped
+          while (j_1 < num_sampled_points - 1 && skip[j_1]) {
+              j_1++; // Keep incrementing j_1 until we find a point that is not skipped
+          }
+          if(j_1 >= num_sampled_points - 1)
+              break;
+          int64_t j_2 = j_1 + 1;
+          while (j_2 < num_sampled_points && skip[j_2]) {
+              j_2++; // Keep incrementing j_2 until we find a point that is not skipped
+          }
+          if(j_2 >= num_sampled_points)
+              break;
+          auto point1 = geometry_points_[j * sample_every_n_];
+          auto point2 = geometry_points_[j_1 * sample_every_n_];
+          auto point3 = geometry_points_[j_2 * sample_every_n_];
+          float_t area = 0.5 * std::abs((point1.x() - point3.x()) * (point2.y() - point1.y()) - (point1.x() - point2.x()) * (point3.y() - point1.y()));
+          if (area < reducing_threshold_) { // If the area is less than the threshold, then we skip the middle point
+              skip[j_1] = true; // Mark the middle point as skipped
+              j = j_2;  // Skip the middle point and start from the next point
+              skipChanged = true; // Set the skipChanged flag to true
+          }
+          else
+          {
+              j = j_1; // If the area is greater than the threshold, then we don't skip the middle point and start from the next point
+          }
+      }
     }
-    if(j!=start)
+  
+    // Create the road lines
+    j = 0;
+    skip[0] = false;
+    skip[num_sampled_points - 1] = false;
+    std::vector<geometry::Vector2D> new_geometry_points; // This list stores the points that are not skipped
+    while (j < num_sampled_points)
     {
-      road_points_.emplace_back(geometry_points_[start * sample_every_n_],
-                                geometry_points_[j * sample_every_n_],
-                                road_type_);
-      road_points_.emplace_back(geometry_points_[j * sample_every_n_],
-                                geometry_points_.back(),
-                                road_type_);
+      if (!skip[j])
+      {
+        new_geometry_points.push_back(geometry_points_[j * sample_every_n_]); // Add the point to the list if it is not skipped
+      }
+      j++;
     }
-    else
+    for(int64_t i = 0; i < new_geometry_points.size() - 1; i++)
     {
-      road_points_.emplace_back(geometry_points_[j * sample_every_n_],
-                                geometry_points_[(j + 1) * sample_every_n_],
-                                road_type_);
-      road_points_.emplace_back(geometry_points_[(j + 1) * sample_every_n_],
-                                geometry_points_.back(),
-                                road_type_);
+      road_points_.emplace_back(new_geometry_points[i], new_geometry_points[i + 1], road_type_); // Create the road lines
     }
-  } else {
+  
+
+    // This is the same logic as before but more efficient without creating a new vector
+    // But I am using the above logic for now to make it simple to debug. 
+    // The missing edges bug is a problem in both logics
+
+    // while( j < num_sampled_points)
+    // {
+    //   int64_t j_1 = j + 1;
+    //   while (j_1 < num_sampled_points && skip[j_1]) {
+    //       j_1++;
+    //   }
+    //   if (j_1 == num_sampled_points) {
+
+    //     if (j != num_sampled_points - 1){
+    //       // std::cout<<"making an edge from "<<j<<" to "<<num_sampled_points - 1<<std::endl;
+    //       road_points_.emplace_back(geometry_points_[j * sample_every_n_],
+    //                                 geometry_points_.back(), road_type_);
+    //     }
+    //     break;
+    //   }
+    //   std::cout<<"making an edge from "<<j<<" to "<<j_1<<std::endl;
+    //   road_points_.emplace_back(geometry_points_[j * sample_every_n_],
+    //                                       geometry_points_[(j_1) * sample_every_n_],
+    //                                       road_type_);
+    //   j = j_1;
+    // }
+
+  }
+   else {
     for (int64_t i = 0; i < num_sampled_points - 2; ++i) {
       road_points_.emplace_back(geometry_points_[i * sample_every_n_],
                                 geometry_points_[(i + 1) * sample_every_n_],
