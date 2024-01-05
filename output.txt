@@ -1,0 +1,1181 @@
+**************InitRoadPoints**************
+num of geometry_points_: 69
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 52
+making an edge from 52 to 68
+**************InitRoadPoints**************
+num of geometry_points_: 138
+making an edge from 0 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 137
+**************InitRoadPoints**************
+num of geometry_points_: 132
+making an edge from 0 to 2
+making an edge from 2 to 4
+making an edge from 4 to 6
+making an edge from 6 to 38
+making an edge from 38 to 54
+making an edge from 54 to 78
+making an edge from 78 to 82
+making an edge from 82 to 84
+making an edge from 84 to 86
+making an edge from 86 to 88
+making an edge from 88 to 90
+making an edge from 90 to 92
+making an edge from 92 to 100
+making an edge from 100 to 131
+**************InitRoadPoints**************
+num of geometry_points_: 42
+making an edge from 0 to 32
+making an edge from 32 to 36
+making an edge from 36 to 38
+making an edge from 38 to 41
+**************InitRoadPoints**************
+num of geometry_points_: 166
+making an edge from 0 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 60
+making an edge from 60 to 68
+making an edge from 68 to 100
+making an edge from 100 to 132
+making an edge from 132 to 165
+**************InitRoadPoints**************
+num of geometry_points_: 104
+making an edge from 0 to 16
+making an edge from 16 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 103
+**************InitRoadPoints**************
+num of geometry_points_: 78
+making an edge from 0 to 16
+making an edge from 16 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 56
+making an edge from 56 to 60
+making an edge from 60 to 64
+making an edge from 64 to 68
+making an edge from 68 to 72
+making an edge from 72 to 77
+**************InitRoadPoints**************
+num of geometry_points_: 167
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 104
+making an edge from 104 to 112
+making an edge from 112 to 128
+making an edge from 128 to 136
+making an edge from 136 to 144
+making an edge from 144 to 152
+making an edge from 152 to 166
+**************InitRoadPoints**************
+num of geometry_points_: 69
+making an edge from 0 to 8
+making an edge from 8 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 48
+making an edge from 48 to 68
+**************InitRoadPoints**************
+num of geometry_points_: 130
+making an edge from 0 to 64
+making an edge from 64 to 92
+making an edge from 92 to 96
+making an edge from 96 to 100
+making an edge from 100 to 104
+making an edge from 104 to 108
+making an edge from 108 to 112
+making an edge from 112 to 120
+making an edge from 120 to 129
+**************InitRoadPoints**************
+num of geometry_points_: 62
+making an edge from 0 to 32
+making an edge from 32 to 61
+**************InitRoadPoints**************
+num of geometry_points_: 322
+making an edge from 0 to 64
+making an edge from 64 to 96
+making an edge from 96 to 160
+making an edge from 160 to 192
+making an edge from 192 to 224
+making an edge from 224 to 248
+making an edge from 248 to 252
+making an edge from 252 to 256
+making an edge from 256 to 260
+making an edge from 260 to 264
+making an edge from 264 to 268
+making an edge from 268 to 272
+making an edge from 272 to 288
+making an edge from 288 to 321
+**************InitRoadPoints**************
+num of geometry_points_: 329
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 176
+making an edge from 176 to 208
+making an edge from 208 to 272
+making an edge from 272 to 328
+**************InitRoadPoints**************
+num of geometry_points_: 289
+making an edge from 0 to 32
+making an edge from 32 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 192
+making an edge from 192 to 224
+making an edge from 224 to 240
+making an edge from 240 to 256
+making an edge from 256 to 280
+making an edge from 280 to 284
+making an edge from 284 to 288
+**************InitRoadPoints**************
+num of geometry_points_: 84
+making an edge from 0 to 8
+making an edge from 8 to 24
+making an edge from 24 to 40
+making an edge from 40 to 56
+making an edge from 56 to 72
+making an edge from 72 to 83
+**************InitRoadPoints**************
+num of geometry_points_: 77
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 76
+**************InitRoadPoints**************
+num of geometry_points_: 217
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 216
+**************InitRoadPoints**************
+num of geometry_points_: 493
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 224
+making an edge from 224 to 256
+making an edge from 256 to 288
+making an edge from 288 to 304
+making an edge from 304 to 320
+making an edge from 320 to 336
+making an edge from 336 to 352
+making an edge from 352 to 384
+making an edge from 384 to 416
+making an edge from 416 to 448
+making an edge from 448 to 480
+making an edge from 480 to 492
+**************InitRoadPoints**************
+num of geometry_points_: 52
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 51
+**************InitRoadPoints**************
+num of geometry_points_: 20
+making an edge from 0 to 19
+**************InitRoadPoints**************
+num of geometry_points_: 113
+making an edge from 0 to 10
+making an edge from 10 to 11
+making an edge from 11 to 43
+making an edge from 43 to 61
+making an edge from 61 to 63
+making an edge from 63 to 65
+making an edge from 65 to 67
+making an edge from 67 to 69
+making an edge from 69 to 71
+making an edge from 71 to 112
+**************InitRoadPoints**************
+num of geometry_points_: 24
+making an edge from 0 to 23
+**************InitRoadPoints**************
+num of geometry_points_: 44
+making an edge from 0 to 16
+making an edge from 16 to 36
+making an edge from 36 to 40
+making an edge from 40 to 43
+**************InitRoadPoints**************
+num of geometry_points_: 22
+making an edge from 0 to 21
+**************InitRoadPoints**************
+num of geometry_points_: 27
+making an edge from 0 to 16
+making an edge from 16 to 26
+**************InitRoadPoints**************
+num of geometry_points_: 67
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 66
+**************InitRoadPoints**************
+num of geometry_points_: 438
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 64
+making an edge from 64 to 96
+making an edge from 96 to 160
+making an edge from 160 to 224
+making an edge from 224 to 288
+making an edge from 288 to 320
+making an edge from 320 to 352
+making an edge from 352 to 384
+making an edge from 384 to 400
+making an edge from 400 to 416
+making an edge from 416 to 437
+**************InitRoadPoints**************
+num of geometry_points_: 38
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 37
+**************InitRoadPoints**************
+num of geometry_points_: 22
+making an edge from 0 to 16
+making an edge from 16 to 21
+**************InitRoadPoints**************
+num of geometry_points_: 10
+making an edge from 0 to 9
+**************InitRoadPoints**************
+num of geometry_points_: 359
+making an edge from 0 to 32
+making an edge from 32 to 64
+making an edge from 64 to 96
+making an edge from 96 to 128
+making an edge from 128 to 160
+making an edge from 160 to 192
+making an edge from 192 to 224
+making an edge from 224 to 288
+making an edge from 288 to 320
+making an edge from 320 to 358
+**************InitRoadPoints**************
+num of geometry_points_: 126
+making an edge from 0 to 32
+making an edge from 32 to 64
+making an edge from 64 to 96
+making an edge from 96 to 125
+**************InitRoadPoints**************
+num of geometry_points_: 117
+making an edge from 0 to 32
+making an edge from 32 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 88
+making an edge from 88 to 116
+**************InitRoadPoints**************
+num of geometry_points_: 42
+making an edge from 0 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 41
+**************InitRoadPoints**************
+num of geometry_points_: 97
+making an edge from 0 to 32
+making an edge from 32 to 36
+making an edge from 36 to 44
+making an edge from 44 to 96
+**************InitRoadPoints**************
+num of geometry_points_: 52
+making an edge from 0 to 32
+making an edge from 32 to 51
+**************InitRoadPoints**************
+num of geometry_points_: 23
+making an edge from 0 to 16
+making an edge from 16 to 22
+**************InitRoadPoints**************
+num of geometry_points_: 209
+making an edge from 0 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 52
+making an edge from 52 to 68
+making an edge from 68 to 84
+making an edge from 84 to 100
+making an edge from 100 to 116
+making an edge from 116 to 132
+making an edge from 132 to 148
+making an edge from 148 to 164
+making an edge from 164 to 180
+making an edge from 180 to 196
+making an edge from 196 to 208
+**************InitRoadPoints**************
+num of geometry_points_: 70
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 69
+**************InitRoadPoints**************
+num of geometry_points_: 102
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 44
+making an edge from 44 to 101
+**************InitRoadPoints**************
+num of geometry_points_: 208
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 16
+making an edge from 16 to 32
+making an edge from 32 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 104
+making an edge from 104 to 112
+making an edge from 112 to 120
+making an edge from 120 to 128
+making an edge from 128 to 136
+making an edge from 136 to 148
+making an edge from 148 to 152
+making an edge from 152 to 156
+making an edge from 156 to 160
+making an edge from 160 to 164
+making an edge from 164 to 168
+making an edge from 168 to 172
+making an edge from 172 to 176
+making an edge from 176 to 180
+making an edge from 180 to 184
+making an edge from 184 to 188
+making an edge from 188 to 192
+making an edge from 192 to 196
+making an edge from 196 to 200
+making an edge from 200 to 204
+making an edge from 204 to 207
+**************InitRoadPoints**************
+num of geometry_points_: 85
+making an edge from 0 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 72
+making an edge from 72 to 84
+**************InitRoadPoints**************
+num of geometry_points_: 79
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 78
+**************InitRoadPoints**************
+num of geometry_points_: 85
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 84
+**************InitRoadPoints**************
+num of geometry_points_: 195
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 104
+making an edge from 104 to 112
+making an edge from 112 to 120
+making an edge from 120 to 128
+making an edge from 128 to 144
+making an edge from 144 to 176
+making an edge from 176 to 188
+making an edge from 188 to 192
+making an edge from 192 to 194
+**************InitRoadPoints**************
+num of geometry_points_: 143
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 56
+making an edge from 56 to 72
+making an edge from 72 to 76
+making an edge from 76 to 92
+making an edge from 92 to 108
+making an edge from 108 to 124
+making an edge from 124 to 142
+**************InitRoadPoints**************
+num of geometry_points_: 2
+making an edge from 0 to 1
+**************InitRoadPoints**************
+num of geometry_points_: 2
+making an edge from 0 to 1
+**************InitRoadPoints**************
+num of geometry_points_: 77
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 76
+**************InitRoadPoints**************
+num of geometry_points_: 75
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 74
+**************InitRoadPoints**************
+num of geometry_points_: 76
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 75
+**************InitRoadPoints**************
+num of geometry_points_: 95
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 80
+making an edge from 80 to 94
+**************InitRoadPoints**************
+num of geometry_points_: 97
+making an edge from 0 to 16
+making an edge from 16 to 48
+making an edge from 48 to 80
+making an edge from 80 to 96
+**************InitRoadPoints**************
+num of geometry_points_: 42
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 41
+**************InitRoadPoints**************
+num of geometry_points_: 22
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 10
+making an edge from 10 to 12
+making an edge from 12 to 14
+making an edge from 14 to 18
+making an edge from 18 to 21
+**************InitRoadPoints**************
+num of geometry_points_: 39
+making an edge from 0 to 16
+making an edge from 16 to 38
+**************InitRoadPoints**************
+num of geometry_points_: 42
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 41
+**************InitRoadPoints**************
+num of geometry_points_: 37
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 36
+**************InitRoadPoints**************
+num of geometry_points_: 25
+making an edge from 0 to 4
+making an edge from 4 to 6
+making an edge from 6 to 8
+making an edge from 8 to 10
+making an edge from 10 to 14
+making an edge from 14 to 18
+making an edge from 18 to 24
+**************InitRoadPoints**************
+num of geometry_points_: 42
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 41
+**************InitRoadPoints**************
+num of geometry_points_: 124
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 60
+making an edge from 60 to 64
+making an edge from 64 to 68
+making an edge from 68 to 72
+making an edge from 72 to 76
+making an edge from 76 to 80
+making an edge from 80 to 84
+making an edge from 84 to 88
+making an edge from 88 to 92
+making an edge from 92 to 96
+making an edge from 96 to 104
+making an edge from 104 to 108
+making an edge from 108 to 112
+making an edge from 112 to 116
+making an edge from 116 to 120
+making an edge from 120 to 123
+**************InitRoadPoints**************
+num of geometry_points_: 72
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 71
+**************InitRoadPoints**************
+num of geometry_points_: 68
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 67
+**************InitRoadPoints**************
+num of geometry_points_: 39
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 38
+**************InitRoadPoints**************
+num of geometry_points_: 24
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 23
+**************InitRoadPoints**************
+num of geometry_points_: 39
+making an edge from 0 to 32
+making an edge from 32 to 38
+**************InitRoadPoints**************
+num of geometry_points_: 43
+making an edge from 0 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 42
+**************InitRoadPoints**************
+num of geometry_points_: 27
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 10
+making an edge from 10 to 14
+making an edge from 14 to 18
+making an edge from 18 to 22
+making an edge from 22 to 26
+**************InitRoadPoints**************
+num of geometry_points_: 193
+making an edge from 0 to 16
+making an edge from 16 to 176
+making an edge from 176 to 192
+**************InitRoadPoints**************
+num of geometry_points_: 194
+making an edge from 0 to 16
+making an edge from 16 to 176
+making an edge from 176 to 193
+**************InitRoadPoints**************
+num of geometry_points_: 358
+making an edge from 0 to 32
+making an edge from 32 to 64
+making an edge from 64 to 128
+making an edge from 128 to 160
+making an edge from 160 to 224
+making an edge from 224 to 256
+making an edge from 256 to 320
+making an edge from 320 to 336
+making an edge from 336 to 357
+**************InitRoadPoints**************
+num of geometry_points_: 358
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 80
+making an edge from 80 to 112
+making an edge from 112 to 144
+making an edge from 144 to 176
+making an edge from 176 to 208
+making an edge from 208 to 240
+making an edge from 240 to 272
+making an edge from 272 to 304
+making an edge from 304 to 320
+making an edge from 320 to 336
+making an edge from 336 to 357
+**************InitRoadPoints**************
+num of geometry_points_: 64
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 63
+**************InitRoadPoints**************
+num of geometry_points_: 356
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 64
+making an edge from 64 to 96
+making an edge from 96 to 128
+making an edge from 128 to 160
+making an edge from 160 to 176
+making an edge from 176 to 192
+making an edge from 192 to 208
+making an edge from 208 to 224
+making an edge from 224 to 240
+making an edge from 240 to 256
+making an edge from 256 to 272
+making an edge from 272 to 288
+making an edge from 288 to 304
+making an edge from 304 to 320
+making an edge from 320 to 336
+making an edge from 336 to 355
+**************InitRoadPoints**************
+num of geometry_points_: 36
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 35
+**************InitRoadPoints**************
+num of geometry_points_: 34
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 33
+**************InitRoadPoints**************
+num of geometry_points_: 56
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 48
+making an edge from 48 to 55
+**************InitRoadPoints**************
+num of geometry_points_: 63
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 62
+**************InitRoadPoints**************
+num of geometry_points_: 63
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 62
+**************InitRoadPoints**************
+num of geometry_points_: 61
+making an edge from 0 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 60
+**************InitRoadPoints**************
+num of geometry_points_: 66
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 65
+**************InitRoadPoints**************
+num of geometry_points_: 74
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 73
+**************InitRoadPoints**************
+num of geometry_points_: 29
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+**************InitRoadPoints**************
+num of geometry_points_: 66
+making an edge from 0 to 65
+**************InitRoadPoints**************
+num of geometry_points_: 69
+making an edge from 0 to 68
+**************InitRoadPoints**************
+num of geometry_points_: 47
+making an edge from 0 to 16
+making an edge from 16 to 46
+**************InitRoadPoints**************
+num of geometry_points_: 47
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 46
+**************InitRoadPoints**************
+num of geometry_points_: 53
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 48
+making an edge from 48 to 52
+**************InitRoadPoints**************
+num of geometry_points_: 33
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 32
+**************InitRoadPoints**************
+num of geometry_points_: 61
+making an edge from 0 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 60
+**************InitRoadPoints**************
+num of geometry_points_: 17
+making an edge from 0 to 16
+**************InitRoadPoints**************
+num of geometry_points_: 19
+making an edge from 0 to 18
+**************InitRoadPoints**************
+num of geometry_points_: 20
+making an edge from 0 to 19
+**************InitRoadPoints**************
+num of geometry_points_: 18
+making an edge from 0 to 17
+**************InitRoadPoints**************
+num of geometry_points_: 63
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 62
+**************InitRoadPoints**************
+num of geometry_points_: 62
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 61
+**************InitRoadPoints**************
+num of geometry_points_: 60
+making an edge from 0 to 16
+making an edge from 16 to 48
+making an edge from 48 to 59
+**************InitRoadPoints**************
+num of geometry_points_: 58
+making an edge from 0 to 32
+making an edge from 32 to 48
+making an edge from 48 to 57
+**************InitRoadPoints**************
+num of geometry_points_: 358
+making an edge from 0 to 32
+making an edge from 32 to 64
+making an edge from 64 to 128
+making an edge from 128 to 192
+making an edge from 192 to 256
+making an edge from 256 to 320
+making an edge from 320 to 336
+making an edge from 336 to 357
+**************InitRoadPoints**************
+num of geometry_points_: 158
+making an edge from 0 to 16
+making an edge from 16 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 136
+making an edge from 136 to 152
+making an edge from 152 to 157
+**************InitRoadPoints**************
+num of geometry_points_: 158
+making an edge from 0 to 16
+making an edge from 16 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 104
+making an edge from 104 to 120
+making an edge from 120 to 136
+making an edge from 136 to 157
+**************InitRoadPoints**************
+num of geometry_points_: 32
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 31
+**************InitRoadPoints**************
+num of geometry_points_: 19
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 10
+making an edge from 10 to 12
+making an edge from 12 to 14
+making an edge from 14 to 18
+**************InitRoadPoints**************
+num of geometry_points_: 28
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 27
+**************InitRoadPoints**************
+num of geometry_points_: 30
+making an edge from 0 to 29
+**************InitRoadPoints**************
+num of geometry_points_: 31
+making an edge from 0 to 30
+**************InitRoadPoints**************
+num of geometry_points_: 21
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 10
+making an edge from 10 to 12
+making an edge from 12 to 14
+making an edge from 14 to 16
+making an edge from 16 to 20
+**************InitRoadPoints**************
+num of geometry_points_: 183
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 176
+making an edge from 176 to 182
+**************InitRoadPoints**************
+num of geometry_points_: 124
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 28
+making an edge from 28 to 32
+making an edge from 32 to 36
+making an edge from 36 to 40
+making an edge from 40 to 44
+making an edge from 44 to 48
+making an edge from 48 to 52
+making an edge from 52 to 56
+making an edge from 56 to 60
+making an edge from 60 to 64
+making an edge from 64 to 68
+making an edge from 68 to 72
+making an edge from 72 to 76
+making an edge from 76 to 80
+making an edge from 80 to 84
+making an edge from 84 to 88
+making an edge from 88 to 92
+making an edge from 92 to 96
+making an edge from 96 to 104
+making an edge from 104 to 108
+making an edge from 108 to 112
+making an edge from 112 to 116
+making an edge from 116 to 123
+**************InitRoadPoints**************
+num of geometry_points_: 161
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+**************InitRoadPoints**************
+num of geometry_points_: 21
+making an edge from 0 to 4
+making an edge from 4 to 6
+making an edge from 6 to 8
+making an edge from 8 to 10
+making an edge from 10 to 14
+making an edge from 14 to 18
+making an edge from 18 to 20
+**************InitRoadPoints**************
+num of geometry_points_: 30
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 29
+**************InitRoadPoints**************
+num of geometry_points_: 155
+making an edge from 0 to 32
+making an edge from 32 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 104
+making an edge from 104 to 112
+making an edge from 112 to 120
+making an edge from 120 to 128
+making an edge from 128 to 136
+making an edge from 136 to 144
+making an edge from 144 to 154
+**************InitRoadPoints**************
+num of geometry_points_: 23
+making an edge from 0 to 4
+making an edge from 4 to 6
+making an edge from 6 to 8
+making an edge from 8 to 10
+making an edge from 10 to 14
+making an edge from 14 to 18
+making an edge from 18 to 22
+**************InitRoadPoints**************
+num of geometry_points_: 32
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 31
+**************InitRoadPoints**************
+num of geometry_points_: 32
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 31
+**************InitRoadPoints**************
+num of geometry_points_: 35
+making an edge from 0 to 4
+making an edge from 4 to 8
+making an edge from 8 to 12
+making an edge from 12 to 16
+making an edge from 16 to 20
+making an edge from 20 to 24
+making an edge from 24 to 28
+making an edge from 28 to 34
+**************InitRoadPoints**************
+num of geometry_points_: 184
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 88
+making an edge from 88 to 96
+making an edge from 96 to 104
+making an edge from 104 to 112
+making an edge from 112 to 120
+making an edge from 120 to 128
+making an edge from 128 to 136
+making an edge from 136 to 144
+making an edge from 144 to 152
+making an edge from 152 to 160
+making an edge from 160 to 168
+making an edge from 168 to 176
+making an edge from 176 to 183
+**************InitRoadPoints**************
+num of geometry_points_: 182
+making an edge from 0 to 16
+making an edge from 16 to 32
+making an edge from 32 to 48
+making an edge from 48 to 64
+making an edge from 64 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 176
+making an edge from 176 to 181
+**************InitRoadPoints**************
+num of geometry_points_: 190
+making an edge from 0 to 8
+making an edge from 8 to 16
+making an edge from 16 to 24
+making an edge from 24 to 32
+making an edge from 32 to 40
+making an edge from 40 to 48
+making an edge from 48 to 56
+making an edge from 56 to 64
+making an edge from 64 to 72
+making an edge from 72 to 80
+making an edge from 80 to 96
+making an edge from 96 to 112
+making an edge from 112 to 128
+making an edge from 128 to 144
+making an edge from 144 to 160
+making an edge from 160 to 176
+making an edge from 176 to 189
+**************InitRoadPoints**************
+num of geometry_points_: 4
+**************InitRoadPoints**************
+num of geometry_points_: 6
+**************InitRoadPoints**************
+num of geometry_points_: 8
+**************InitRoadPoints**************
+num of geometry_points_: 4
+**************InitRoadPoints**************
+num of geometry_points_: 4
+**************InitRoadPoints**************
+num of geometry_points_: 4
+**************InitRoadPoints**************
+num of geometry_points_: 4
+**************InitRoadPoints**************
+num of geometry_points_: 6
+> /home/aarav/nocturne_lab/examples/rendering/img_scenario0.1.png
