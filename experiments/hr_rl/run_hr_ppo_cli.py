@@ -5,6 +5,7 @@ from datetime import datetime
 
 import numpy as np
 import torch
+from traitlets import Callable
 import typer
 from box import Box
 from stable_baselines3.common.policies import ActorCriticPolicy
@@ -13,6 +14,8 @@ import wandb
 
 # Import networks
 from networks.mlp_late_fusion import LateFusionMLP, LateFusionMLPPolicy
+# Permutation equivariant network
+from networks.perm_eq_late_fusion import LateFusionNet, LateFusionPolicy 
 
 # Multi-agent as vectorized environment
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
@@ -52,6 +55,9 @@ def run_hr_ppo(
     arch_road_graph: str = "small",
     arch_shared_net: str = "small",
     activation_fn: str = "tanh",
+    speed_target: bool = True,
+    position_target_tolerance: float = 1.0, 
+    speed_target_tolerance: float = 1.0,
     dropout: float = 0.0, 
     total_timesteps: int = 1_000_000,
     num_files: int = 10,
@@ -63,6 +69,10 @@ def run_hr_ppo(
     env_config.steer_disc = steer_disc
     env_config.accel_disc = accel_disc
     env_config.num_files = num_files
+    env_config.rew_cfg.speed_target = speed_target
+    env_config.rew_cfg.position_target_tolerance = position_target_tolerance
+    env_config.rew_cfg.speed_target_tolerance = speed_target_tolerance
+
     # Experiment
     exp_config.seed = seed
     exp_config.ent_coef = ent_coef
@@ -94,7 +104,6 @@ def run_hr_ppo(
     env = MultiAgentAsVecEnv(
         config=env_config,
         num_envs=env_config.max_num_vehicles,
-        train_on_single_scene=exp_config.train_on_single_scene,
     )
 
     # Set up run
@@ -117,8 +126,10 @@ def run_hr_ppo(
 
         logging.info(f"Created env. Max # agents = {env_config.max_num_vehicles}.")
         logging.info(f"Learning in {len(env.env.files)} scene(s): {env.env.files} | using {exp_config.ppo.device}")
+
         logging.info(f"--- obs_space: {env.observation_space.shape[0]} ---")
         logging.info(f"Action_space\n: {env.env.idx_to_actions}")
+        logging.info(f"Pos target tol: {env_config.rew_cfg.position_target_tolerance} | Speed target: {env_config.rew_cfg.speed_target} - tol: {env_config.rew_cfg.speed_target_tolerance}")
 
         # Initialize custom callback
         custom_callback = CustomMultiAgentCallback(
@@ -140,11 +151,13 @@ def run_hr_ppo(
                     n_steps=None,
                 )
 
-        # Load human reference policy
-        saved_variables = torch.load(exp_config.human_policy_path, map_location=exp_config.ppo.device)
-        human_policy = ActorCriticPolicy(**saved_variables["data"])
-        human_policy.load_state_dict(saved_variables["state_dict"])
-        human_policy.to(exp_config.ppo.device)
+        human_policy = None
+        # Load human reference policy if regularization is used
+        if exp_config.reg_weight > 0.0:
+            saved_variables = torch.load(exp_config.human_policy_path, map_location=exp_config.ppo.device)
+            human_policy = ActorCriticPolicy(**saved_variables["data"])
+            human_policy.load_state_dict(saved_variables["state_dict"])
+            human_policy.to(exp_config.ppo.device)
 
         # Set up PPO
         model = RegularizedPPO(
@@ -152,7 +165,7 @@ def run_hr_ppo(
             reg_weight=exp_config.reg_weight,  # Regularization weight; lambda
             env=env,
             n_steps=exp_config.ppo.n_steps,
-            policy=LateFusionMLPPolicy,
+            policy=LateFusionPolicy,
             ent_coef=exp_config.ppo.ent_coef,
             vf_coef=exp_config.ppo.vf_coef,
             seed=exp_config.seed,  # Seed for the pseudo random generators
@@ -161,7 +174,7 @@ def run_hr_ppo(
       
             device=exp_config.ppo.device,
             env_config=env_config,
-            mlp_class=LateFusionMLP,
+            mlp_class=LateFusionNet,
             mlp_config=model_config,
         )
 

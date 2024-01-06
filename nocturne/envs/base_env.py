@@ -472,21 +472,34 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
         """
         Calculate observation dimension based on the configs.
         """
+        # Set dimensions (fixed values)
+        self.road_obj_feat = 13
+        self.road_graph_feat = 13
+        self.stop_sign_feat = 3
+        self.tl_feat = 12
+        self.ego_state_feat = 10
+
+        # Compute observation dimension
         obs_space_dim = 0
 
         if self.config.subscriber.use_ego_state:
-            obs_space_dim += 10
+            obs_space_dim += self.ego_state_feat
 
         if self.config.subscriber.use_current_position:
             obs_space_dim += 2
 
         if self.config.subscriber.use_observations:
+            self.ro_dim = self.road_obj_feat * self.config.scenario.max_visible_objects
+            self.rg_dim = self.road_graph_feat * self.config.scenario.max_visible_road_points
+            self.tl_dim = self.tl_feat * self.config.scenario.max_visible_traffic_lights
+            self.ss_dim = self.stop_sign_feat * self.config.scenario.max_visible_stop_signs
+
             obs_space_dim += (
                 base + 
-                (13 * self.config.scenario.max_visible_objects) + 
-                (13 * self.config.scenario.max_visible_road_points) + 
-                (3  * self.config.scenario.max_visible_stop_signs) + 
-                (12 * self.config.scenario.max_visible_traffic_lights)
+                self.ro_dim  +
+                self.rg_dim +
+                self.tl_dim +
+                self.ss_dim
             )
 
         # Multiply by memory to get the final dimension
@@ -710,11 +723,25 @@ if __name__ == "__main__":
     # Load environment variables and config
     env_config = load_config("env_config")
 
+    env_config.subscriber.use_observations = False
+    env_config.normalize_state = False
+
     # Initialize an environment
     env = BaseEnv(config=env_config)
 
+    avg_init_dist_to_goal = 0
+    N = 100
+    for i in range(N):
+        ego_states = env.reset()
+        for agent_id in ego_states.keys():
+            print(f"init_dist_to_goal: {ego_states[agent_id][3]:.2f}")
+
+            avg_init_dist_to_goal += ego_states[agent_id][3]
+    
+    print(f'AVG init dist to goal: {avg_init_dist_to_goal / N:.2f}')
+
     # Reset
-    obs_dict = env.reset(filename='tfrecord-00421-of-01000_364.json')
+    obs_dict = env.reset()
 
     # Get info
     agent_ids = [agent_id for agent_id in obs_dict.keys()]
