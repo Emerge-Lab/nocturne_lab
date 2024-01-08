@@ -47,7 +47,7 @@ void RoadLine::InitRoadPoints() {
   const int64_t num_sampled_points =
       (num_segments + sample_every_n_ - 1) / sample_every_n_ + 1;
   road_points_.reserve(num_sampled_points);
-  if (road_type_ == RoadType::kLane || road_type_ == RoadType::kRoadEdge || road_type_ == RoadType::kRoadLine) {
+  if (num_segments >= 10 && (road_type_ == RoadType::kLane || road_type_ == RoadType::kRoadEdge || road_type_ == RoadType::kRoadLine)) {
     std::vector<bool> skip(num_sampled_points, false); // This list tracks the points that are skipped
     int64_t j = 0;
     bool skipChanged = true; // This is used to check if the skip list has changed in the last iteration
