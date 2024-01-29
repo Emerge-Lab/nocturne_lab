@@ -356,6 +356,7 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
             for veh in self.scenario.getObjectsThatMoved():
                 veh.expert_control = True
             for _ in range(self.config.scenario.context_length):
+                self.step_num += 1
                 for veh in self.scenario.getObjectsThatMoved():
                     self.context_dict[veh.getID()].append(self.get_observation(veh))
                 self.simulation.step(self.config.dt)

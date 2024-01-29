@@ -99,7 +99,7 @@ class TrajectoryIterator(IterableDataset):
         for timestep in range(self.config.episode_length + self.config.warmup_period):
             for veh_obj in objects_of_interest:
                 # Get (continuous) expert action
-                expert_action = scenario.expert_action(veh_obj, timestep)
+                expert_action = scenario.expert_action(veh_obj, sim.step_num)
 
                 # Check for invalid actions (None) (because no value available for taking
                 # derivative) or because the vehicle is at an invalid state
@@ -177,10 +177,9 @@ class TrajectoryIterator(IterableDataset):
             # Step through scene in expert-control mode
             else:
                 for veh_obj in agents_of_interest:
-                    veh_obj.expert_control = True
 
                     # Get (continuous) expert action
-                    expert_action = self.env.scenario.expert_action(veh_obj, timestep)
+                    expert_action = self.env.scenario.expert_action(veh_obj, self.env.step_num)
 
                     # Discretize expert action
                     if expert_action is not None:

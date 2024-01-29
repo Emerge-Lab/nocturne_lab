@@ -5,7 +5,7 @@ experiment: intersection
 env: my_custom_multi_env_v1 # name of the env, hardcoded for now
 
 # All goals are achievable within 90 steps
-episode_length: 80
+episode_length: 90
 warmup_period: 10 # In the RL setting we use a warmup of 10 steps
 # How many files of the total dataset to use. -1 indicates to use all of them
 num_files: 1000
@@ -21,7 +21,7 @@ accel_upper_bound: 5.0
 steering_lower_bound: -1.5 # steer right
 steering_upper_bound: 1.5 # steer left
 steering_discretization: 11
-max_num_vehicles: 25 # Maximum number of vehicles in the scene we control
+max_num_vehicles: 20 # Maximum number of vehicles in the scene we control
 scenario:
   # initial timestep of the scenario (which ranges from timesteps 0 to 90)
   start_time: 0
