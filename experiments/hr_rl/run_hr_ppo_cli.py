@@ -88,6 +88,7 @@ def run_hr_ppo(
     reg_weight: float = 0.0,
     num_controlled_veh: int = 20,
     pretrained_model: str = "None",
+    human_policy_name: str = "human_policy_D99_S13_FILTERED_01_29_14_46.pt",
 ) -> None:
     """Train RL agent using PPO with CLI arguments."""
     
@@ -164,7 +165,7 @@ def run_hr_ppo(
 
     logging.info(f"--- obs_space: {env.observation_space.shape[0]} ---")
     logging.info(f"--- act_space: {env.action_space.n} ---")
-    logging.info(f"--- randomized goals: {env_config.target_positions.randomize_goals} ---")
+    logging.info(f"--- randomized goals: {env_config.target_positions.randomize_goals} --- \n")
 
     # Initialize custom callback
     custom_callback = CustomMultiAgentCallback(
@@ -189,10 +190,15 @@ def run_hr_ppo(
     human_policy = None
     # Load human reference policy if regularization is used
     if exp_config.reg_weight > 0.0:
-        saved_variables = torch.load(exp_config.human_policy_path, map_location=exp_config.ppo.device)
-        human_policy = ActorCriticPolicy(**saved_variables["data"])
-        human_policy.load_state_dict(saved_variables["state_dict"])
+        exp_config.human_policy = human_policy_name
+        checkpoint = torch.load(
+            f"{exp_config.human_policy_base_path}/{exp_config.human_policy}", 
+            map_location=exp_config.ppo.device
+        )
+        human_policy = ActorCriticPolicy(**checkpoint["data"])
+        human_policy.load_state_dict(checkpoint["state_dict"])
         human_policy.to(exp_config.ppo.device)
+        logging.info(f'Using human_policy: {human_policy_name}')
 
     # Proceed training from a pretrained model
     if pretrained_model != 'None':
