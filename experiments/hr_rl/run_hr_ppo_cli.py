@@ -3,7 +3,6 @@ import logging
 import os
 from datetime import datetime
 from random import randint
-from time import sleep
 from typing import Callable
 import numpy as np
 import torch
@@ -74,7 +73,7 @@ def run_hr_ppo(
     sweep_name: str = exp_config.group,
     ent_coef: float = 0.001,
     vf_coef: float = 0.5,
-    mini_batch_size: int = 256,
+    mini_batch_size: int = 512,
     seed: int = 42,
     lr: float = 3e-4,
     arch_road_objects: str = "large",
@@ -87,7 +86,7 @@ def run_hr_ppo(
     total_timesteps: int = 10_000_000,
     num_files: int = 1000,
     reg_weight: float = 0.0,
-    num_controlled_veh: int = 100,
+    num_controlled_veh: int = 25,
     pretrained_model: str = "None",
 ) -> None:
     """Train RL agent using PPO with CLI arguments."""

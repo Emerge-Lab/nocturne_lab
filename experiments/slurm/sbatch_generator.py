@@ -14,7 +14,7 @@ DEFAULT_SLURM_FIELDS = {
     'num_cpus': 1,
     'num_gpus': 1,
     'gpu_type': None,  # --gres=gpu:1:rtx8000; logic: if gpu_type in supported list, add to end. If not supported list, throw exception, and if not provided, don't add GPU type
-    'memory': 10,
+    'memory': 20,
     'memory_unit': 'GB',
     'time_d': 0,'time_h': 0, 'time_m': 0, 'time_s': 0,  
     'max_sim_jobs': None,
@@ -223,7 +223,7 @@ def save_scripts(sbatch_filename, bash_filename, file_path, run_script, fields, 
 
 if __name__ == '__main__':
 
-    SWEEP_NAME = 'randomized_goals'
+    SWEEP_NAME = 'hr_rl_paper'
 
     # Define SBATCH params
     fields = {
@@ -235,11 +235,11 @@ if __name__ == '__main__':
 
     params = {
         'sweep_name': [SWEEP_NAME], # Project name
-        'lr': [3e-4],
+        'lr': [1e-4, 3e-4],
         'ent_coef': [0.001, 0.002],
-        'reg_weight': [0.0, 0.005, 0.01, 0.025, 0.05, 0.2],
+        'reg_weight': [0.0, 0.005, 0.01, 0.025, 0.05, 0.2, 0.5],
         'total_timesteps': [60_000_000], # Total training steps
-        'num_controlled_veh': [1, 50], # Add multi-agent + single-agent baselines
+        'num_controlled_veh': [1, 25], # Add multi-agent + single-agent baselines
     }
     
     save_scripts(

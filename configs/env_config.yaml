@@ -21,7 +21,7 @@ accel_upper_bound: 5.0
 steering_lower_bound: -1.5 # steer right
 steering_upper_bound: 1.5 # steer left
 steering_discretization: 11
-max_num_vehicles: 50 # Maximum number of vehicles in the scene we control
+max_num_vehicles: 25 # Maximum number of vehicles in the scene we control
 scenario:
   # initial timestep of the scenario (which ranges from timesteps 0 to 90)
   start_time: 0
@@ -70,7 +70,7 @@ rew_cfg:
   goal_distance_penalty: false # if shaped_goal_distance is true, then when this is True the goal distance
                                # is a penalty for being far from
                                # goal instead of a reward for being close
-  goal_achieved_bonus: 80
+  goal_achieved_bonus: 50
   position_target: true # If True, goal is only achieved if you're within this tolerance on distance from goal
   position_target_tolerance: 2.0 # euclidean distance to target
   speed_target: false # If True, goal is only achieved if you're within this tolerance on final agent speed at goal position
