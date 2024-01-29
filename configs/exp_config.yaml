@@ -35,7 +35,7 @@ learn:
 
 # human-regularized RL
 reg_weight: 0.0
-human_policy_path: models/il/human_policy_D99_S1000_01_25_14_48.pt
+human_policy_path: models/il/S1000/human_policy_D99_S1000_01_25_14_48.pt
 
 # Model arch
 model_config:

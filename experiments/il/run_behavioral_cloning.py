@@ -37,8 +37,8 @@ logging.basicConfig(level=logging.INFO)
 # Device TODO: Add support for CUDA
 device = "cpu"
 
-
 if __name__ == "__main__":
+    
     NUM_TRAIN_FILES = 1000
     MAX_EVAL_FILES = 5
 
@@ -57,14 +57,6 @@ if __name__ == "__main__":
     env_config = load_config("env_config")
     exp_config = load_config("exp_config")
     env_config.num_files = NUM_TRAIN_FILES
-
-    # Change action space
-    env_config.accel_discretization = 9
-    env_config.accel_lower_bound = -5.0
-    env_config.accel_upper_bound = 5.0
-    env_config.steering_lower_bound = -1.5  # steer right
-    env_config.steering_upper_bound = 1.5  # steer left
-    env_config.steering_discretization = 11
 
     logging.info("(1/4) Create iterator...")
 

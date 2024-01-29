@@ -17,7 +17,7 @@ from nocturne.envs.base_env import BaseEnv
 from utils.config import load_config
 
 # Global setting
-logging.basicConfig(level="DEBUG")
+logging.basicConfig(level="INFO")
 
 
 class TrajectoryIterator(IterableDataset):
@@ -101,9 +101,9 @@ class TrajectoryIterator(IterableDataset):
                 # Get (continuous) expert action
                 expert_action = scenario.expert_action(veh_obj, sim.step_num)
 
-                # Check for invalid actions (None) (because no value available for taking
+                # Check for invalid actions (None or nan) (because no value available for taking
                 # derivative) or because the vehicle is at an invalid state
-                if expert_action is None:
+                if expert_action is None or expert_action.steering != expert_action.steering:
                     continue
 
                 expert_accel, expert_steering, _ = expert_action.numpy()
@@ -177,38 +177,23 @@ class TrajectoryIterator(IterableDataset):
             # Step through scene in expert-control mode
             else:
                 for veh_obj in agents_of_interest:
-
                     # Get (continuous) expert action
                     expert_action = self.env.scenario.expert_action(veh_obj, self.env.step_num)
 
                     # Discretize expert action
-                    if expert_action is not None:
-                        expert_accel, expert_steering, _ = expert_action.numpy()
-                        # Map actions to nearest grid indices and joint action
-                        accel_grid_val, _ = self._find_closest_index(self.accel_grid, expert_accel)
-                        steering_grid_val, _ = self._find_closest_index(self.steering_grid, expert_steering)
-                        expert_action_idx = self.actions_to_joint_idx[accel_grid_val, steering_grid_val][0]
-
-                        action_dict[veh_obj.id] = expert_action_idx
-
-                        logging.debug(f"-- veh_id = {veh_obj.id} --")
-                        logging.debug(
-                            f"true_exp_acc = {expert_action.acceleration:.4f}; true_exp_steer = {expert_action.steering:.4f}"
-                        )
-                        logging.debug(
-                            f"disc_exp_acc = {accel_grid_val:.4f}; disc_exp_steer = {steering_grid_val:.4f} \n"
-                        )
-
-                        if expert_action.acceleration is np.nan or expert_action.steering is np.nan:
-                            logging.debug(f"-- veh_id = {veh_obj.id} --")
-                            logging.debug(
-                                f"true_exp_acc = {expert_action.acceleration:.4f}; true_exp_steer = {expert_action.steering:.4f}"
-                            )
-                            logging.debug(
-                                f"disc_exp_acc = {accel_grid_val:.4f}; disc_exp_steer = {steering_grid_val:.4f} \n"
-                            )
-                            raise ValueError("Expert action is NaN!")
+                    if expert_action is not None and expert_action.steering == expert_action.steering:
+                        # Check if one of the expert actions is NaN
+                        # https://stackoverflow.com/questions/570669/checking-if-a-double-or-float-is-nan-in-c
+                        if expert_action.steering == expert_action.steering:
+                            # Convert to numpy
+                            expert_accel, expert_steering, _ = expert_action.numpy()
+                            # Map actions to nearest grid indices and joint action
+                            accel_grid_val, _ = self._find_closest_index(self.accel_grid, expert_accel)
+                            steering_grid_val, _ = self._find_closest_index(self.steering_grid, expert_steering)
+                            expert_action_idx = self.actions_to_joint_idx[accel_grid_val, steering_grid_val][0]
+                            action_dict[veh_obj.id] = expert_action_idx
                     else:
+                        # If expert action is None or nan, then we don't have a valid action
                         continue
 
             # Store actions + obervations of living agents
@@ -314,5 +299,3 @@ if __name__ == "__main__":
     )
 
     obs, acts, next_obs, dones = rollouts
-
-    print("hi")

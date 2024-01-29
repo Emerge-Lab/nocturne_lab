@@ -5,7 +5,7 @@ experiment: intersection
 env: my_custom_multi_env_v1 # name of the env, hardcoded for now
 
 # All goals are achievable within 90 steps
-episode_length: 90
+episode_length: 80
 warmup_period: 10 # In the RL setting we use a warmup of 10 steps
 # How many files of the total dataset to use. -1 indicates to use all of them
 num_files: 1000

@@ -581,7 +581,6 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
 
             else:  # Keep the standard goal positions at the end of the expert trajectory
                 veh_obj.setGoalPosition(veh_obj.target_position)
-                logging.debug(f"goal_pos: {veh_obj.target_position} \n")
 
     def normalize_ego_state_by_cat(self, state):
         """Divide every feature in the ego state by the maximum value of that feature."""
@@ -795,6 +794,7 @@ if __name__ == "__main__":
     # Load environment variables and config
     env_config = load_config("env_config")
     env_config.max_num_vehicles = 1
+    
     # Initialize an environment
     env = BaseEnv(config=env_config)
     obs_dict = env.reset()

@@ -103,9 +103,11 @@ class RegularizedPPO(MultiAgentPPO):
                     ).distribution.probs
 
                     # Compute loss
-                    loss_reg = self.reg_loss(   
-                        policy_action_dist.log(), reg_policy_action_dist.log()
+                    epsilon = 1e-8
+                    loss_reg = self.reg_loss(
+                        (policy_action_dist + epsilon).log(), (reg_policy_action_dist + epsilon).log()
                     )
+                    
                 # # # # # # # # # HR_PPO EDIT # # # # # # # # #
 
                 values, log_prob, entropy = self.policy.evaluate_actions(rollout_data.observations, actions)
@@ -114,7 +116,7 @@ class RegularizedPPO(MultiAgentPPO):
                 advantages = rollout_data.advantages
                 # Normalization does not make sense if mini batchsize == 1, see GH issue #325
                 if self.normalize_advantage and len(advantages) > 1:
-                    advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
+                    advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-5)
 
                 # ratio between old and new policy, should be one at the first iteration
                 ratio = torch.exp(log_prob - rollout_data.old_log_prob)
