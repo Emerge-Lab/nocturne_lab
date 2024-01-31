@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --array=0-23%25
-#SBATCH --job-name=hr_rl_little_data
+#SBATCH --array=0-26%25
+#SBATCH --job-name=little_dataset
 #SBATCH --output=experiments/slurm/logs/output_%A_%a.txt
 #SBATCH --error=experiments/slurm/logs/error_%A_%a.txt
 #SBATCH --mem=15GB
@@ -13,5 +13,5 @@
 SINGULARITY_IMAGE=hpc/nocturne.sif
 OVERLAY_FILE=hpc/overlay-15GB-500K.ext3
 
-singularity exec --nv --overlay "${OVERLAY_FILE}:ro"     "${SINGULARITY_IMAGE}"     /bin/bash experiments/slurm/run_scripts/bash_exec_hr_rl_little_data.sh "${SLURM_ARRAY_TASK_ID}"
+singularity exec --nv --overlay "${OVERLAY_FILE}:ro"     "${SINGULARITY_IMAGE}"     /bin/bash experiments/slurm/run_scripts/bash_exec_little_dataset.sh "${SLURM_ARRAY_TASK_ID}"
 echo "Successfully launched image."

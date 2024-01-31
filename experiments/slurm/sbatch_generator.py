@@ -223,44 +223,41 @@ def save_scripts(sbatch_filename, bash_filename, file_path, run_script, fields, 
 
 if __name__ == '__main__':
 
-    SWEEP_NAME = 'hr_rl_paper'
+    SWEEP_NAME = 'little_dataset'
 
     # Define SBATCH params
     fields = {
-        'time_h': 12, # Max time per job
+        'time_h': 47, # Max time per job
         'num_gpus': 1, # GPUs per job 
         'max_sim_jobs': 25, # Max jobs at the same time
         'job_name': SWEEP_NAME,
     }
 
-    # params = {
-    #     'sweep_name': [SWEEP_NAME], # Project name
-    #     'human_policy_name': [
-    #         'human_policy_D99_S10_UNFILTERED_01_29_15_57.pt',
-    #         'human_policy_D99_S57_UNFILTERED_01_29_15_31.pt',
-    #         'human_policy_D99_S283_UNFILTERED_01_29_16_38.pt',
-    #         'human_policy_D99_S13_FILTERED_01_29_14_46.pt', 
-    #         'human_policy_D99_S104_FILTERED_01_29_14_02.pt',     
-    #         'human_policy_D99_S436_FILTERED_01_29_15_15.pt',
-    #     ],
-    #     'seed': [42, 8],
-    #     'reg_weight': [0.02, 0.025],
-    #     'total_timesteps': [50_000_000], # Total training steps
-    #     'num_controlled_veh': [20], # Add multi-agent + single-agent baselines
-    # }
-    
     params = {
         'sweep_name': [SWEEP_NAME], # Project name
-        'pretrained_model': [
-            'policy_L0.01_S1000_I2250',
-            'policy_L0.025_S1000_I2250',
-            'policy_L0.05_S1000_I2250',
+        'human_policy_name': [
+            'human_policy_D99_S13_FILTERED_01_29_14_46.pt', 
+            'human_policy_D99_S104_FILTERED_01_29_14_02.pt',     
+            'human_policy_D99_S436_FILTERED_01_29_15_15.pt',
         ],
-        'human_policy_name': ['human_policy_D99_S1000_01_29_11_53.pt'], 
-        'ent_coef': [0.001, 0.005],
-        'total_timesteps': [30_000_000], # Total training steps
-        'num_controlled_veh': [20], # Add multi-agent + single-agent baselines
+        'ent_coef': [0.001, 0.005, 0.002],
+        'reg_weight': [0.02, 0.025, 0.01],
+        'total_timesteps': [60_000_000], # Total training steps
+        'num_controlled_veh': [20], 
     }
+    
+    # params = {
+    #     'sweep_name': [SWEEP_NAME], # Project name
+    #     'pretrained_model': [
+    #         'policy_L0.01_S1000_I2250',
+    #         'policy_L0.025_S1000_I2250',
+    #         'policy_L0.05_S1000_I2250',
+    #     ],
+    #     'human_policy_name': ['human_policy_D99_S1000_01_29_11_53.pt'], 
+    #     'ent_coef': [0.001, 0.005],
+    #     'total_timesteps': [30_000_000], # Total training steps
+    #     'num_controlled_veh': [20], # Add multi-agent + single-agent baselines
+    # }
     
     save_scripts(
         sbatch_filename=f"sbatch_{SWEEP_NAME}.sh",
