@@ -44,3 +44,5 @@ model_config:
   arch_shared: ''
   act_func: ''
   dropout": 0.0
+
+pretrained_base_path: models/pretrained

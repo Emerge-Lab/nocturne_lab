@@ -57,7 +57,7 @@ remove_at_collide: true # if true, remove the agent when it collides
 # # # Goal settings # # # #
 target_positions:
   randomize_goals: false # Randomize the goals
-  time_steps_list: [20, 40, 60] # The time steps at which we sample intermediate goals
+  time_steps_list: [40, 60] # The time steps at which we sample intermediate goals
 
 # # # Reward settings # # # #
 rew_cfg:

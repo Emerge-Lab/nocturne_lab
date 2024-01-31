@@ -14,7 +14,7 @@ DEFAULT_SLURM_FIELDS = {
     'num_cpus': 1,
     'num_gpus': 1,
     'gpu_type': None,  # --gres=gpu:1:rtx8000; logic: if gpu_type in supported list, add to end. If not supported list, throw exception, and if not provided, don't add GPU type
-    'memory': 20,
+    'memory': 15,
     'memory_unit': 'GB',
     'time_d': 0,'time_h': 0, 'time_m': 0, 'time_s': 0,  
     'max_sim_jobs': None,
@@ -227,19 +227,39 @@ if __name__ == '__main__':
 
     # Define SBATCH params
     fields = {
-        'time_h': 47, # Max time per job
+        'time_h': 12, # Max time per job
         'num_gpus': 1, # GPUs per job 
         'max_sim_jobs': 25, # Max jobs at the same time
         'job_name': SWEEP_NAME,
     }
 
+    # params = {
+    #     'sweep_name': [SWEEP_NAME], # Project name
+    #     'human_policy_name': [
+    #         'human_policy_D99_S10_UNFILTERED_01_29_15_57.pt',
+    #         'human_policy_D99_S57_UNFILTERED_01_29_15_31.pt',
+    #         'human_policy_D99_S283_UNFILTERED_01_29_16_38.pt',
+    #         'human_policy_D99_S13_FILTERED_01_29_14_46.pt', 
+    #         'human_policy_D99_S104_FILTERED_01_29_14_02.pt',     
+    #         'human_policy_D99_S436_FILTERED_01_29_15_15.pt',
+    #     ],
+    #     'seed': [42, 8],
+    #     'reg_weight': [0.02, 0.025],
+    #     'total_timesteps': [50_000_000], # Total training steps
+    #     'num_controlled_veh': [20], # Add multi-agent + single-agent baselines
+    # }
+    
     params = {
         'sweep_name': [SWEEP_NAME], # Project name
-        'lr': [1e-4, 3e-4],
-        'ent_coef': [0.001, 0.002],
-        'reg_weight': [0.0, 0.005, 0.01, 0.025, 0.05, 0.2, 0.5],
-        'total_timesteps': [60_000_000], # Total training steps
-        'num_controlled_veh': [1, 25], # Add multi-agent + single-agent baselines
+        'pretrained_model': [
+            'policy_L0.01_S1000_I2250',
+            'policy_L0.025_S1000_I2250',
+            'policy_L0.05_S1000_I2250',
+        ],
+        'human_policy_name': ['human_policy_D99_S1000_01_29_11_53.pt'], 
+        'ent_coef': [0.001, 0.005],
+        'total_timesteps': [30_000_000], # Total training steps
+        'num_controlled_veh': [20], # Add multi-agent + single-agent baselines
     }
     
     save_scripts(

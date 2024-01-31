@@ -13,6 +13,7 @@ import wandb
 
 # Permutation equivariant network
 from networks.perm_eq_late_fusion import LateFusionNet, LateFusionPolicy
+import re
 
 # Multi-agent as vectorized environment
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
@@ -48,6 +49,12 @@ TIME_STEPS_DICT = {
     'B': [10, 20, 30, 40, 50, 60, 70],
 }
 
+def extract_between(text):
+    """Obtain regularization weight."""
+    pattern = r"(?<=_L).*?(?=_S1000)"
+    match = re.search(pattern, text)
+    return match.group() if match else None
+
 def linear_schedule(initial_value: float) -> Callable[[float], float]:
     """
     Linear learning rate schedule.
@@ -81,14 +88,14 @@ def run_hr_ppo(
     arch_shared_net: str = "small",
     activation_fn: str = "tanh",
     dropout: float = 0.0,
-    randomize_goals: int = 1,
+    randomize_goals: int = 0,
     rand_goals_timesteps: str = 'A',
     total_timesteps: int = 10_000_000,
     num_files: int = 1000,
-    reg_weight: float = 0.0,
+    reg_weight: float = 0.1,
     num_controlled_veh: int = 20,
-    pretrained_model: str = "None",
-    human_policy_name: str = "human_policy_D99_S13_FILTERED_01_29_14_46.pt",
+    pretrained_model: str = "policy_L0.01_S1000_I2250",
+    human_policy_name: str = "human_policy_D99_S104_FILTERED_01_29_14_02.pt",
 ) -> None:
     """Train RL agent using PPO with CLI arguments."""
     
@@ -199,13 +206,25 @@ def run_hr_ppo(
         human_policy.load_state_dict(checkpoint["state_dict"])
         human_policy.to(exp_config.ppo.device)
         logging.info(f'Using human_policy: {human_policy_name}')
-
+        
     # Proceed training from a pretrained model
     if pretrained_model != 'None':
-        model = RegularizedPPO.load(pretrained_model)
+        model = RegularizedPPO.load(f"{exp_config.pretrained_base_path}/{pretrained_model}")
         model.set_env(env)
-        logging.info(f"Loaded pretrained model: {pretrained_model} --- continue training")
         
+        # Extract regularization weight
+        if exp_config.reg_weight > 0.0:
+            exp_config.reg_weight = float(extract_between(pretrained_model))
+            exp_config.pretrained_model = pretrained_model
+
+            # Set human policy and weight
+            if exp_config.reg_weight > 0.0:
+                model.reg_weight = exp_config.reg_weight
+                model.reg_policy = human_policy
+        
+        logging.info(f"Loaded pretrained model: {pretrained_model} --- continue training with {model.reg_weight}")
+        
+
     # Set up PPO
     else:  
         model = RegularizedPPO(
@@ -218,7 +237,7 @@ def run_hr_ppo(
             batch_size=exp_config.ppo.batch_size,
             ent_coef=exp_config.ppo.ent_coef,
             vf_coef=exp_config.ppo.vf_coef,
-            seed=exp_config.seed,  # Seed for the pseudo random generators
+            seed=exp_config.seed, # Seed for the pseudo random generators
             verbose=exp_config.verbose,
             tensorboard_log=f"runs/{run.id}" if run is not None else None,
             device=exp_config.ppo.device,

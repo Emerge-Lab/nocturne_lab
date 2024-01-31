@@ -101,8 +101,8 @@ class CustomMultiAgentCallback(BaseCallback):
         self.logger.record("rollout/obs_max", np.max(observations[valid_obs_mask]))
 
         # Evaluate policy on train and test dataset
-        if self.iteration % self.exp_config.ma_callback.eval_freq == 0:
-            self._evaluate_policy(policy=self.model, dataset="train", name="train_det", data_folder="data_full", det_mode=True)
+        # if self.iteration % self.exp_config.ma_callback.eval_freq == 0:
+        #     self._evaluate_policy(policy=self.model, dataset="train", name="train_det", data_folder="data_full", det_mode=True)
 
         # Render
         if self.exp_config.ma_callback.save_video:
@@ -130,8 +130,8 @@ class CustomMultiAgentCallback(BaseCallback):
             logging.info(f'Turning off randomized intermediate goals.')
             
         # Update probabilities for sampling scenes
-        if self.locals["env"].psr_dict is not None:
-            self._update_sampling_probs()
+        # if self.locals["env"].psr_dict is not None:
+        #     self._update_sampling_probs()
 
     def _on_training_end(self) -> None:
         """
@@ -235,7 +235,7 @@ class CustomMultiAgentCallback(BaseCallback):
 
         self.logger.record(f"eval_{name}_/num_eval_scenes", total_eval_episodes)
         self.logger.record(f"eval_{name}_/total_samples", total_samples)
-        self.logger.record(f"eval_{name}_/goal_rate", (total_goal_achieved / total_samples) * 100)
+        self.logger.record(f"eval_{name}_/goal_rate", (total_goal_achieved / (total_samples)) * 100)
         self.logger.record(f"eval_{name}_/coll_rate", (total_coll / total_samples) * 100)
 
     def _update_sampling_probs(self):
