@@ -1,32 +1,119 @@
-models_dir: models
+# Base paths 
+bc_models_dir: models/il
+hr_ppo_models_dir_self_play: models/hr_rl/0130_paper/ma_s1000
+hr_ppo_models_dir_log_replay: models/hr_rl/0130_paper/sa_s1000
+small_data_bc_models_dir: models/il/small_data
+small_data_hr_ppo_models_dir: models/hr_rl/0130_paper/small_data
 
-models:
-# Imitation learning model trained on a single scene
-- name: "human_policy_single_scene"
-  run: "_2023_11_22"
-  version: None
+# Aggregate performance table 
+best_overall_models: 
+  - name: policy_L0.0_S1000_I1212
+    agent: PPO
+    reg_weight: 0.0 
+    train_agent: Self-play
+    wandb_run: 
 
-# # PPO model trained for 5M steps
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_18__23_48_07_ego_reg_coef_None"
-#   version: "model_steps_1253376"
+  - name: policy_L0.02_S1000_I1654
+    reg_weight: 0.02
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: magic-frost-373
 
-# HR-PPO model trained for 5M steps with lambda = 0.001
-- name: "sb3_nocturne_ppo_multi_mac"
-  run: "2023_08_19__07_03_39_ego_reg_coef_0.001"
-  version: "model_steps_1253376"
+  - name: policy_L0.025_S1000_I3250
+    reg_weight: 0.025
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: deep-bush-33
 
-# # HR-PPO model trained for 5M steps with lambda = 0.05
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_19__22_16_42_ego_reg_coef_0.05"
-#   version: "model_steps_626688"
+  - name: policy_L0.05_S1000_I3431
+    reg_weight: 0.05
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: resilient-sunset-338
 
-# # HR-PPO model trained for 5M steps with lambda = 0.1
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_19__16_10_24_ego_reg_coef_0.1"
-#   version: "model_steps_626688"
+# Human likeness vs. performance
+trade_off_analysis: 
+  - name: policy_L0.0_S1000_I1212
+    agent: PPO
+    reg_weight: 0.0 
+    train_agent: Self-play
+    wandb_run: 
 
-# # HR-PPO model trained for 5M steps with lambda = 0.5
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_19__17_59_38_ego_reg_coef_0.5"
-#   version: "model_steps_626688"
+  - name: policy_L0.005_S1000_I2250
+    reg_weight: 0.005
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: sage-butterfly-341
+
+  - name: policy_L0.01_S1000_I3459
+    reg_weight: 0.01
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: treasured-waterfall-339
+
+  - name: policy_L0.025_S1000_I3250
+    reg_weight: 0.025
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: deep-bush-33
+
+  - name: policy_L0.05_S1000_I3431
+    reg_weight: 0.05
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: resilient-sunset-338
+
+used_human_policy: # The human reference policy used for HR-PPO
+  - name: human_policy_D99_S1000_01_29_11_53
+    agent: BC
+    train_agent: '-'
+    wandb_run: '-'
+
+small_data_il: # How much data do we need for better coordination?
+  # - name: human_policy_D99_S13_FILTERED_01_29_14_46 # PPO-only baseline
+  #   type: "filtered"
+  #   samples: 5000
+
+  # - name: human_policy_D99_S104_FILTERED_01_29_14_02
+  #   type: "filtered"
+  #   samples: 20_000
+
+  - name: human_policy_D99_S436_FILTERED_01_29_15_15
+    type: "filtered"
+    samples: 100_000
+
+  # - name: human_policy_D99_S10_UNFILTERED_01_29_15_57
+  #   type: "unfiltered"
+  #   samples: 5000
+    
+  # - name: human_policy_D99_S57_UNFILTERED_01_29_15_31
+  #   type: "unfiltered"
+  #   samples: 20_000
+
+  # - name: human_policy_D99_S283_UNFILTERED_01_29_16_38
+  #   type: "unfiltered"
+  #   samples: 100_000
+
+small_data_hr_ppo:
+  - name: policy_L0.0_S1000_I1212
+    type: "baseline"
+    agent: PPO
+    samples: 0
+
+  - name: policy_L0.02_S1000_I2953_S13_FILTERED
+    type: "filtered"
+    agent: HR-PPO
+    samples: 5000
+    wandb_run: serene-puddle-352
+  
+  - name: policy_L0.02_S1000_I2750_S57_UNFILTERED
+    type: "unfiltered"
+    agent: HR-PPO
+    samples: 20_000
+    wandb_run: true-dust-356
+
+  - name: policy_L0.02_S1000_I1750_S436_FILTERED
+    type: "filtered"
+    agent: HR-PPO
+    samples: 100_000
+    wandb_run: misty-blaze-364

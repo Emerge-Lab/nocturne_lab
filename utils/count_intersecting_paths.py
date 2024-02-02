@@ -165,12 +165,13 @@ if __name__ == "__main__":
     logging.basicConfig()
     logging.getLogger().setLevel(logging.INFO)
     
-    MAX_SCENES = 20_000
+    MAX_SCENES = 1000
     
     # Load config
     env_config = load_config("env_config")
     # Set data path for which we want to obtain the number of intersecting paths
     env_config.data_path = "data_full/train/"
+    env_config.max_controlled_vehicles = 200
     
     # Scenes on which to evaluate the models
     # Make sure file order is fixed so that we evaluate on the same files used for training
@@ -186,5 +187,5 @@ if __name__ == "__main__":
     df_intersect = create_intersecting_path_dict(
         env=env, 
         traffic_scenes=eval_files, 
-        save_as=f'valid_{MAX_SCENES}'
+        save_as=f'train_{MAX_SCENES}'
     )

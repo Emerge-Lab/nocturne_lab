@@ -83,6 +83,7 @@ models/
 # Figures and results
 figures/
 results/
+evaluation/
 
 # Videos and scene info dicts
 videos/

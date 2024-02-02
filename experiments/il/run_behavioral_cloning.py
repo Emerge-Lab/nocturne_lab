@@ -39,8 +39,8 @@ device = "cpu"
 
 if __name__ == "__main__":
     
-    NUM_TRAIN_FILES = 1000
-    MAX_EVAL_FILES = 5
+    NUM_TRAIN_FILES = 50
+    FILTER_OUT_NON_REACHING_AGENTS = False
 
     # Create run
     run = wandb.init(
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         group=f"BC_S{NUM_TRAIN_FILES}",
     )
 
-    logging.info(f"Creating human policy from {NUM_TRAIN_FILES} files...")
+    logging.info(f"Creating human policy from {NUM_TRAIN_FILES} files... FILTER_OUT_NON_REACHING_AGENTS: {FILTER_OUT_NON_REACHING_AGENTS}")
 
     # Configs
     video_config = load_config("video_config")
@@ -64,6 +64,7 @@ if __name__ == "__main__":
     waymo_iterator = TrajectoryIterator(
         env_config=env_config,
         apply_obs_correction=False,
+        filter_out_non_reaching_agents=FILTER_OUT_NON_REACHING_AGENTS, # Only use state-action pairs from goal-reaching agents
         data_path=env_config.data_path,
         file_limit=env_config.num_files,
     )
@@ -81,6 +82,8 @@ if __name__ == "__main__":
         )
     )
 
+    logging.info(f'Dataset size: {rollouts[0].shape} from {waymo_iterator.num_scenes} scenes')
+    
     # Convert to dataset of imitation "transitions"
     transitions = Transitions(
         obs=rollouts[0].to(device),
@@ -108,7 +111,6 @@ if __name__ == "__main__":
         device=torch.device("cpu"),
     )
 
-    logging.info(f"IL policy: \n{bc_trainer.policy}")
     logging.info("(3/4) Training...")
 
     # Train
@@ -117,16 +119,16 @@ if __name__ == "__main__":
     )
 
     logging.info("(4/4) Save...")
-
-    # Evaluate, get scores
-    # Scenes on which to evaluate the models
-    # Make sure file order is fixed so that we evaluate on the same files used for training
-    train_file_paths = glob.glob(f"{env_config.data_path}" + "/tfrecord*")
-    train_eval_files = sorted([os.path.basename(file) for file in train_file_paths])[:NUM_TRAIN_FILES]
-
     if bc_config.save_model:
-        # Save model
         datetime_ = datetime_to_str(dt=datetime.now())
-        bc_trainer.policy.save(
-            path=f"{bc_config.save_model_path}{bc_config.model_name}_S{NUM_TRAIN_FILES}_{datetime_}.pt"
-        )
+        
+        if FILTER_OUT_NON_REACHING_AGENTS:
+            bc_trainer.policy.save(
+                path=f"{bc_config.save_model_path}{bc_config.model_name}_S{waymo_iterator.num_scenes}_FILTERED_{datetime_}.pt"
+            )
+            
+        else:
+            datetime_ = datetime_to_str(dt=datetime.now())
+            bc_trainer.policy.save(
+                path=f"{bc_config.save_model_path}{bc_config.model_name}_S{waymo_iterator.num_scenes}_UNFILTERED_{datetime_}.pt"
+            )

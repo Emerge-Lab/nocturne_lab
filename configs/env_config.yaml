@@ -8,7 +8,7 @@ env: my_custom_multi_env_v1 # name of the env, hardcoded for now
 episode_length: 80
 warmup_period: 10 # In the RL setting we use a warmup of 10 steps
 # How many files of the total dataset to use. -1 indicates to use all of them
-num_files: 1000
+num_files: 50
 fix_file_order: true # If true, always select the SAME files (when creating the environent), if false, pick files at random
 sample_file_method: random   # ALTERNATIVES: "no_replacement"
 dt: 0.1
@@ -70,7 +70,7 @@ rew_cfg:
   goal_distance_penalty: false # if shaped_goal_distance is true, then when this is True the goal distance
                                # is a penalty for being far from
                                # goal instead of a reward for being close
-  goal_achieved_bonus: 80
+  goal_achieved_bonus: 50
   position_target: true # If True, goal is only achieved if you're within this tolerance on distance from goal
   position_target_tolerance: 2.0 # euclidean distance to target
   speed_target: false # If True, goal is only achieved if you're within this tolerance on final agent speed at goal position

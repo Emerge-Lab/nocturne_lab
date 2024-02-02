@@ -356,11 +356,16 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
             for veh in self.scenario.getObjectsThatMoved():
                 veh.expert_control = True
             for _ in range(self.config.scenario.context_length):
-                self.step_num += 1
+        
                 for veh in self.scenario.getObjectsThatMoved():
                     self.context_dict[veh.getID()].append(self.get_observation(veh))
+                
+                # Step the simulator
                 self.simulation.step(self.config.dt)
-            # now hand back control to our actual controllers
+                # Increment the time
+                self.step_num += 1
+                
+            # Hand back control to our actual controllers
             for veh in self.scenario.getObjectsThatMoved():
                 veh.expert_control = False
 
@@ -427,8 +432,11 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
             # or else we might be stuck in an infinite loop
             if len(self.all_vehicle_ids) > 0:
                 break
-        else:  # No break in for-loop, i.e., no valid vehicle found in any of the files.
-            raise ValueError(f"No controllable vehicles in any of the {len(self.files)} scenes.")
+            else: 
+                logging.info(f"No controllable vehicles in scene: {str(self.file)}")
+                if filename is not None: # Return none and skip this scene
+                    return
+                
 
         # Set goal positions for controlled vehicles
         self._set_goal_positions()

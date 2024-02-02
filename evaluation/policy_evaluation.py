@@ -65,6 +65,7 @@ def evaluate_policy(
 
     # Run
     for _ in tqdm(range(num_episodes)):
+        
         # Reset to a new scene
         obs_dict = env.reset()
 
@@ -165,7 +166,7 @@ def evaluate_policy(
                     off_road[agend_idx] += last_info_dicts[agent_id]["veh_edge_collision"] * 1
                     goal_achieved[agend_idx] += last_info_dicts[agent_id]["goal_achieved"] * 1
 
-                    logging.info(f"Goal achieved: {last_info_dicts[agent_id]['goal_achieved']}")
+                    logging.debug(f"Goal achieved: {last_info_dicts[agent_id]['goal_achieved']}")
 
                 # Get scene info
                 if scene_path_mapping is not None:
@@ -241,10 +242,12 @@ if __name__ == "__main__":
         env_config=env_config,
         controlled_agents=1,
         data_path=TRAIN_DATA_PATH,
-        mode="cont_expert_act_replay",
+        mode="expert_replay",
         select_from_k_scenes=1000,
         num_episodes=1000,
     )
+    
+    print(df_expert_replay[['goal_rate', 'off_road', 'veh_veh_collision']].mean())
 
     # with open("invalid_train", "wb") as fp:   #Pickling
     #     pickle.dump(inval_scenes, fp)

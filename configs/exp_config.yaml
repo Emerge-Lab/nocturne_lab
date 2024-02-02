@@ -1,5 +1,5 @@
-project: hr_rl_exp
-group: randomize_goals
+project: isolate
+group: 50_scenes
 env_id: Nocturne
 seed: 42
 track_wandb: true

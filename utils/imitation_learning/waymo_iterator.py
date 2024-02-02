@@ -19,11 +19,11 @@ from utils.config import load_config
 # Global setting
 logging.basicConfig(level="INFO")
 
-
 class TrajectoryIterator(IterableDataset):
-    def __init__(self, data_path, env_config, apply_obs_correction=False, with_replacement=True, file_limit=-1):
+    def __init__(self, data_path, env_config, filter_out_non_reaching_agents=False, apply_obs_correction=False, with_replacement=True, file_limit=-1):
         self.data_path = data_path
         self.config = env_config
+        self.filter_out_non_reaching_agents = filter_out_non_reaching_agents
         self.apply_obs_correction = apply_obs_correction
         self.env = BaseEnv(env_config)
         self.with_replacement = with_replacement
@@ -33,6 +33,8 @@ class TrajectoryIterator(IterableDataset):
         self.observation_space = gym.spaces.Box(-np.inf, np.inf, self.env.observation_space.shape, np.float32)
         self.action_space = gym.spaces.Discrete(len(self.actions_to_joint_idx))
         self.ep_norm_rewards = []
+        self.skipped_scenes = []
+        self.num_scenes = 0
 
         super(TrajectoryIterator).__init__()
 
@@ -67,6 +69,16 @@ class TrajectoryIterator(IterableDataset):
             expert_obs, expert_acts, expert_next_obs, expert_dones = self._step_through_scene(
                 filename=filename, expert_actions_df=expert_actions_df, mode="expert_discrete"
             )
+            
+            is_empty = expert_obs.size == 0
+            if is_empty: 
+                print(f'Skipping scene: {filename}')
+                if filename not in self.skipped_scenes:
+                    self.skipped_scenes.append(filename)
+                continue
+            else:
+                self.num_scenes += 1
+            
             # (4) Return
             for obs, act, next_obs, done in zip(expert_obs, expert_acts, expert_next_obs, expert_dones):
                 yield (obs, act, next_obs, done)
@@ -96,7 +108,7 @@ class TrajectoryIterator(IterableDataset):
 
         df_actions = pd.DataFrame(actions_dict)
 
-        for timestep in range(self.config.episode_length + self.config.warmup_period):
+        for timestep in range(self.config.episode_length):
             for veh_obj in objects_of_interest:
                 # Get (continuous) expert action
                 expert_action = scenario.expert_action(veh_obj, sim.step_num)
@@ -232,13 +244,23 @@ class TrajectoryIterator(IterableDataset):
 
         # Some vehicles may be finished earlier than others, so we mask out the invalid samples
         # And flatten along the agent axis
-        valid_samples_mask = ~np.isnan(expert_action_arr)
+        valid_agent_mask = ep_rewards == self.config.rew_cfg.goal_achieved_bonus / self.config.rew_cfg.reward_scaling
+        valid_samples_mask = ~np.isnan(expert_action_arr)        
 
-        expert_action_arr = expert_action_arr[valid_samples_mask]
-        obs_arr = obs_arr[valid_samples_mask]
-        next_obs_arr = next_obs_arr[valid_samples_mask]
-        dones_arr = dones_arr[valid_samples_mask].astype(bool)
-
+        # Filter out nans and agents that did not reach the goal
+        if self.filter_out_non_reaching_agents:
+            combined_mask = np.logical_and(valid_agent_mask, valid_samples_mask)
+            expert_action_arr = expert_action_arr[combined_mask]
+            obs_arr = obs_arr[combined_mask]
+            next_obs_arr = next_obs_arr[combined_mask]
+            dones_arr = dones_arr[combined_mask]
+        else:
+            # Filter out nans alone
+            expert_action_arr = expert_action_arr[valid_samples_mask]
+            obs_arr = obs_arr[valid_samples_mask]
+            next_obs_arr = next_obs_arr[valid_samples_mask]
+            dones_arr = dones_arr[valid_samples_mask].astype(bool)        
+            
         return obs_arr, expert_action_arr, next_obs_arr, dones_arr
 
     def _set_discrete_action_space(self):
@@ -269,16 +291,7 @@ class TrajectoryIterator(IterableDataset):
 
 if __name__ == "__main__":
     env_config = load_config("env_config")
-    env_config.num_files = 1
-
-    # Change action space
-    env_config.accel_discretization = 5
-    env_config.accel_lower_bound = -3
-    env_config.accel_upper_bound = 3
-    env_config.steering_lower_bound = -0.7  # steer right
-    env_config.steering_upper_bound = 0.7  # steer left
-    env_config.steering_discretization = 31
-
+    
     # Create iterator
     waymo_iterator = TrajectoryIterator(
         apply_obs_correction=False,
@@ -292,7 +305,7 @@ if __name__ == "__main__":
         iter(
             DataLoader(
                 waymo_iterator,
-                batch_size=10_000,  # Number of samples to generate
+                batch_size=100_000,  # Number of samples to generate
                 pin_memory=True,
             )
         )

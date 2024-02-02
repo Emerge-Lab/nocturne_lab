@@ -22,7 +22,6 @@ class EvaluatePolicy:
     def __init__(
         self,
         env_config,
-        exp_config,
         policy,
         eval_files=None,
         reg_coef=None,
@@ -30,12 +29,11 @@ class EvaluatePolicy:
         with_replacement=True,
         return_trajectories=False,
         single_agent=False,
-        file_limit=1000,
+        file_limit=100_000,
     ):
         self.env_config = env_config
         if single_agent:
             self.env_config.max_num_vehicles = 1
-        self.exp_config = exp_config
         self.policy = policy
         self.eval_files = self._get_files(eval_files, file_limit)
         self.reg_coef = reg_coef
@@ -54,7 +52,7 @@ class EvaluatePolicy:
         # Create tables
         df_eval = pd.DataFrame(
             columns=[
-                "reg_coef",
+                "Reg. weight",
                 "traffic_scene",
                 "agent_id",
                 "act_acc",
@@ -110,44 +108,50 @@ class EvaluatePolicy:
                 policy_veh_cr,
             ) = self._step_through_scene(file, mode="policy")
 
-            # Filter out invalid steps
-            nonnan_ids = ~np.isnan(expert_actions)
+            # If scene was valid
+            if expert_actions is not None or policy_actions is not None:
+                # Filter out invalid steps
+                nonnan_ids = ~np.isnan(expert_actions)
 
-            # Compute metrics
-            action_accuracies = self.get_action_accuracy(policy_actions, expert_actions, nonnan_ids)
+                # Compute metrics
+                action_accuracies = self.get_action_accuracy(
+                    policy_actions, 
+                    expert_actions, 
+                    nonnan_ids
+                )
 
-            position_rmse = self.get_pos_rmse(
-                policy_pos,
-                expert_pos,
-            )
+                position_rmse = self.get_pos_rmse(
+                    policy_pos,
+                    expert_pos,
+                )
 
-            speed_agent_mae = self.get_speed_mae(
-                policy_speed,
-                expert_speed,
-            )
+                speed_agent_mae = self.get_speed_mae(
+                    policy_speed,
+                    expert_speed,
+                )
 
-            abs_diff_accel, abs_diff_steer = self.get_action_val_diff(
-                policy_actions,
-                expert_actions,
-            )
+                abs_diff_accel, abs_diff_steer = self.get_action_val_diff(
+                    policy_actions,
+                    expert_actions,
+                )
 
-            # Store metrics
-            scene_perf = pd.DataFrame(
-                {
-                    "reg_coef": np.repeat(self.reg_coef, len(self.agent_names)),
-                    "traffic_scene": file,
-                    "agent_id": self.agent_names,
-                    "act_acc": action_accuracies,
-                    "accel_val_mae": abs_diff_accel,
-                    "steer_val_mae": abs_diff_steer,
-                    "pos_rmse": position_rmse,
-                    "speed_mae": speed_agent_mae,
-                    "goal_rate": policy_gr,
-                    "off_road": policy_edge_cr,
-                    "veh_veh_collision": policy_veh_cr,
-                }
-            )
-            df_eval = pd.concat([df_eval, scene_perf], ignore_index=True)
+                # Store metrics
+                scene_perf = pd.DataFrame(
+                    {
+                        "Reg. weight": np.repeat(self.reg_coef, len(self.agent_names)),
+                        "traffic_scene": file,
+                        "agent_id": self.agent_names,
+                        "act_acc": action_accuracies,
+                        "accel_val_mae": abs_diff_accel,
+                        "steer_val_mae": abs_diff_steer,
+                        "pos_rmse": position_rmse,
+                        "speed_mae": speed_agent_mae,
+                        "goal_rate": policy_gr,
+                        "off_road": policy_edge_cr,
+                        "veh_veh_collision": policy_veh_cr,
+                    }
+                )
+                df_eval = pd.concat([df_eval, scene_perf], ignore_index=True)
 
             if self.return_trajectories:
                 scene_trajs = pd.DataFrame(
@@ -180,6 +184,10 @@ class EvaluatePolicy:
         """
         # Reset env
         obs_dict = self.env.reset(filename)
+        
+        if obs_dict is None: # Scene is invalid
+            return None, None, None, None, None, None  
+    
         num_steps = self.env_config.episode_length
         self.num_agents = len(self.env.controlled_vehicles)
 

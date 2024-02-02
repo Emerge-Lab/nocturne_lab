@@ -91,11 +91,11 @@ def run_hr_ppo(
     randomize_goals: int = 0,
     rand_goals_timesteps: str = 'A',
     total_timesteps: int = 10_000_000,
-    num_files: int = 1000,
-    reg_weight: float = 0.1,
-    num_controlled_veh: int = 20,
-    pretrained_model: str = "policy_L0.01_S1000_I2250",
-    human_policy_name: str = "human_policy_D99_S104_FILTERED_01_29_14_02.pt",
+    num_files: int = 50,
+    reg_weight: float = 0.0,
+    num_controlled_veh: int = 50,
+    pretrained_model: str = "None",
+    human_policy_name: str = "human_policy_D99_S1000_01_29_11_53.pt",
 ) -> None:
     """Train RL agent using PPO with CLI arguments."""
     
@@ -169,7 +169,7 @@ def run_hr_ppo(
     # Logging
     logging.info(f"Created env. Max # agents = {env_config.max_num_vehicles}.")
     logging.info(f"Learning in {len(env.env.files)} scene(s). Device = {exp_config.ppo.device}.")
-
+    logging.info(f"Reg. weight: {exp_config.reg_weight} --- Seed: {exp_config.seed} ---")
     logging.info(f"--- obs_space: {env.observation_space.shape[0]} ---")
     logging.info(f"--- act_space: {env.action_space.n} ---")
     logging.info(f"--- randomized goals: {env_config.target_positions.randomize_goals} --- \n")
@@ -262,5 +262,6 @@ def run_hr_ppo(
 
 
 if __name__ == "__main__":
+    
     # Run
     typer.run(run_hr_ppo)

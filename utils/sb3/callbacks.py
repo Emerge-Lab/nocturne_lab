@@ -125,9 +125,9 @@ class CustomMultiAgentCallback(BaseCallback):
 
         # TODO @dc do this properly
         # If intermediate goals are on, turn them off after ~ 2 M steps
-        if self.num_timesteps > 4_000_000 and self.locals["env"].env.config.target_positions.randomize_goals:
-            self.locals["env"].env.config.target_positions.randomize_goals = False
-            logging.info(f'Turning off randomized intermediate goals.')
+        # if self.num_timesteps > 4_000_000 and self.locals["env"].env.config.target_positions.randomize_goals:
+        #     self.locals["env"].env.config.target_positions.randomize_goals = False
+        #     logging.info(f'Turning off randomized intermediate goals.')
             
         # Update probabilities for sampling scenes
         # if self.locals["env"].psr_dict is not None:
