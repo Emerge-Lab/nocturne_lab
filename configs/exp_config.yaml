@@ -1,5 +1,5 @@
-project: isolate
-group: 50_scenes
+project: isolate_error
+group: 20_scenes
 env_id: Nocturne
 seed: 42
 track_wandb: true
@@ -35,7 +35,7 @@ learn:
 
 # human-regularized RL
 reg_weight: 0.0
-human_policy_base_path: models/il
+human_policy_base_path: models/il/isolate_error
 
 # Model arch
 model_config:

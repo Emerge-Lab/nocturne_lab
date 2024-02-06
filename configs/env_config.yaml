@@ -70,7 +70,7 @@ rew_cfg:
   goal_distance_penalty: false # if shaped_goal_distance is true, then when this is True the goal distance
                                # is a penalty for being far from
                                # goal instead of a reward for being close
-  goal_achieved_bonus: 50
+  goal_achieved_bonus: 10
   position_target: true # If True, goal is only achieved if you're within this tolerance on distance from goal
   position_target_tolerance: 2.0 # euclidean distance to target
   speed_target: false # If True, goal is only achieved if you're within this tolerance on final agent speed at goal position

@@ -1,0 +1,25 @@
+# Base paths 
+bc_models_dir: models/il/isolate_error
+hr_ppo_models_dir_self_play: models/hr_rl/isolate_error
+wandb_url: https://wandb.ai/daphnecor/isolate_error?workspace=user-daphnecor
+ 
+best_overall_models: 
+  - name: policy_L0.0_S50_I1250.zip
+    agent: PPO
+    reg_weight: 0.0 
+    train_agent: Self-play
+
+  - name: policy_L0.01_S50_I1000.zip
+    reg_weight: 0.01
+    agent: HR-PPO
+    train_agent: Self-play
+
+  - name: policy_L0.025_S50_I1000.zip
+    reg_weight: 0.025
+    agent: HR-PPO
+    train_agent: Self-play
+
+used_human_policy: # The human reference policy used for HR-PPO
+  - name: human_policy_D99_50S_S308_UNFILTERED_02_02_18_07
+    agent: BC
+    train_agent: '-'

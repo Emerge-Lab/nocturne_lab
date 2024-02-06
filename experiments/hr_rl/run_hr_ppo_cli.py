@@ -90,12 +90,12 @@ def run_hr_ppo(
     dropout: float = 0.0,
     randomize_goals: int = 0,
     rand_goals_timesteps: str = 'A',
-    total_timesteps: int = 10_000_000,
-    num_files: int = 50,
-    reg_weight: float = 0.0,
-    num_controlled_veh: int = 50,
+    total_timesteps: int = 25_000_000,
+    num_files: int = 20,
+    reg_weight: float = 0.025,
+    num_controlled_veh: int = 20,
     pretrained_model: str = "None",
-    human_policy_name: str = "human_policy_D99_S1000_01_29_11_53.pt",
+    human_policy_name: str = "human_policy_D99_50S_S308_UNFILTERED_02_02_18_07.pt",
 ) -> None:
     """Train RL agent using PPO with CLI arguments."""
     
