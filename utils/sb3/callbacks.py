@@ -107,6 +107,10 @@ class CustomMultiAgentCallback(BaseCallback):
         #     self._evaluate_policy(policy=self.model, dataset="train", name="train_det", data_folder="data_full", det_mode=True)
 
         # Render
+        if self.exp_config.track_wandb:
+            wandb.log({"rollout/obs_dist": wandb.Histogram(np_histogram=np.histogram(observations[valid_obs_mask]))})
+        
+        # Make a video with a random scene
         if self.exp_config.ma_callback.save_video:
             if self.iteration % self.exp_config.ma_callback.video_save_freq == 0:
                 logging.info(f"Making video at iter = {self.iteration} | global_step = {self.num_timesteps}")
