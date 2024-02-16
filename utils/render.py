@@ -24,8 +24,7 @@ def make_video(
     *,
     filenames = None,
     deterministic: bool = True,
-    max_steps: int = 80,
-    snap_interval: int = 3,
+    snap_interval: int = 2,
     frames_per_second: int = 3,
 ) -> Tuple[np.ndarray, pd.DataFrame]:
     """Make a video of policy in traffic scene. 
@@ -42,7 +41,6 @@ def make_video(
         n_steps (Optional[int]): The global step number. Defaults to None.
         filenames (Optional, List of str): The filename of the scene to render, if None, a random scene is selected. 
         deterministic (bool, optional): If true, set policy to determistic mode. Defaults to True.
-        max_steps (int, optional): Episode length. Defaults to 80.
         snap_interval (int, optional): Take snapshot every n steps. Defaults to 4.
         frames_per_second (int, optional): Speed with which to replay video. Defaults to 4.
     """
@@ -109,7 +107,7 @@ def make_video(
                     model if isinstance(model, str) else "custom",
                     str(filenames[scene_idx]) if filenames[0] is not None else " ",
                     str(scene_idx),
-                    str(max_steps),
+                    str(env_config.episode_length),
                     str(snap_interval),
                     "--deterministic" if deterministic else "--no-deterministic",
                     "--headless-machine" if exp_config.where_am_i == "headless_machine" else "--no-headless-machine",

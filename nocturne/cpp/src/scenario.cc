@@ -279,6 +279,8 @@ void Scenario::Step(float dt) {
   for (auto& object : traffic_lights_) {
     object->set_current_time(current_time_);
   }
+  // std::cout << "[C++] t = " << current_time_ << std::endl;
+  // std::cout << "[C++] expert heading" << expert_headings_.at(22).at(current_time_) << std::endl;
 
   // update the vehicle bvh
   object_bvh_.Reset(objects_);
@@ -545,6 +547,8 @@ std::optional<Action> Scenario::ExpertAction(const Object& obj,
   const std::vector<float>& cur_headings = expert_headings_.at(obj.id());
   const std::vector<float>& cur_speeds = expert_speeds_.at(obj.id());
   const std::vector<bool>& valid_mask = expert_valid_masks_.at(obj.id());
+  const std::vector<geometry::Vector2D>& cur_velocities =
+      expert_velocities_.at(obj.id());
   const int64_t trajectory_length = valid_mask.size();
 
   if (timestamp < 0 || timestamp > trajectory_length - 1) {
@@ -558,19 +562,22 @@ std::optional<Action> Scenario::ExpertAction(const Object& obj,
   // a_t = (v_{t+1} - v_t) / dt
   const float acceleration =
       (cur_speeds[timestamp + 1] - cur_speeds[timestamp]) / expert_dt_;
-
-  // compute steering
-  // cf Object::KinematicBicycleStep
-  // w = (h_{t+1} - h_t) / dt = v * tan(steering) * cos(beta) / length
-  // -> solve for steering s_t, we get s_t = atan(2C / sqrt(4 - C^2)) + k * pi
-  // with C = 2 * length * (h_{t+1} - h_t) / (dt * (v_t + v_{t+1}))
-  const float w = geometry::utils::AngleSub(cur_headings[timestamp + 1],
-                                            cur_headings[timestamp]) /
-                  expert_dt_;
-  const float C = 2.0f * obj.length() * w /
-                  (cur_speeds[timestamp + 1] + cur_speeds[timestamp]);
-  const float steering = std::atan(2.0f * C / std::sqrt(4 - C * C));
-
+  // Calculate the updated yaw using the velocity angle
+  float real_new_yaw = std::atan2(cur_velocities[timestamp + 1].y(),
+                                  cur_velocities[timestamp + 1].x());
+  // TODO: @ev Update real_new_yaw
+  // if (cur_speeds[timestamp + 1] < 0.6) {
+  //   real_new_yaw = new_yaw;
+  // }
+  // Compute delta yaw
+  const float delta_yaw = geometry::utils::AngleSub(cur_headings[timestamp + 1],
+                                                    cur_headings[timestamp]);
+  // Calculate steering.
+  float steering = delta_yaw / (cur_speeds[timestamp] * expert_dt_ +
+                                0.5 * acceleration * pow(expert_dt_, 2));
+  if (cur_speeds[timestamp] < 0.6) {
+    steering = 0.0;
+  }
   // return action
   return std::make_optional<Action>(acceleration, steering, 0.0);
 }
@@ -615,7 +622,6 @@ std::optional<float> Scenario::ExpertHeadingShift(const Object& obj,
   // a_t = (v_{t+1} - v_t) / dt
   float heading_shift = geometry::utils::AngleSub(cur_heading[timestamp + 1],
                                                   cur_heading[timestamp]);
-
   // return action
   return heading_shift;
 }
@@ -905,15 +911,18 @@ void Scenario::LoadObjects(const json& objects_json) {
     const auto& obj_velocity = obj["velocity"];
     const auto& obj_valid = obj["valid"];
     const int64_t trajectory_length = obj_position.size();
+    const bool is_av = obj["is_av"].template get<int>();
 
     std::vector<geometry::Vector2D> cur_trajectory;
     std::vector<float> cur_headings;
     std::vector<float> cur_speeds;
     std::vector<bool> valid_mask;
+    std::vector<geometry::Vector2D> cur_velocities;
     cur_trajectory.reserve(trajectory_length);
     cur_headings.reserve(trajectory_length);
     cur_speeds.reserve(trajectory_length);
     valid_mask.reserve(trajectory_length);
+    cur_velocities.reserve(trajectory_length);
 
     float target_heading = 0.0f;
     float target_speed = 0.0f;
@@ -926,11 +935,14 @@ void Scenario::LoadObjects(const json& objects_json) {
       const float cur_speed =
           geometry::Vector2D(obj_velocity[i]["x"], obj_velocity[i]["y"]).Norm();
       const bool valid = static_cast<bool>(obj_valid[i]);
+      const geometry::Vector2D cur_velocity(obj_velocity[i]["x"],
+                                         obj_velocity[i]["y"]);
 
       cur_trajectory.push_back(cur_pos);
       cur_headings.push_back(cur_heading);
       cur_speeds.push_back(cur_speed);
       valid_mask.push_back(valid);
+      cur_velocities.push_back(cur_velocity);
 
       if (valid) {
         // Use the last valid heading and speed as target heading and speed.
@@ -954,7 +966,7 @@ void Scenario::LoadObjects(const json& objects_json) {
       std::shared_ptr<Vehicle> vehicle = std::make_shared<Vehicle>(
           cur_id, length, width, position, cur_headings[current_time_],
           cur_speeds[current_time_], target_position, target_heading,
-          target_speed);
+          target_speed, is_av);
       vehicles_.push_back(vehicle);
       objects_.push_back(vehicle);
       if (is_moving) {
@@ -990,6 +1002,7 @@ void Scenario::LoadObjects(const json& objects_json) {
     expert_headings_.push_back(std::move(cur_headings));
     expert_speeds_.push_back(std::move(cur_speeds));
     expert_valid_masks_.push_back(std::move(valid_mask));
+    expert_velocities_.push_back(std::move(cur_velocities));
     ++cur_id;
   }
 

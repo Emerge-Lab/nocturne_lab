@@ -1,32 +1,42 @@
-models_dir: models
+# Base paths 
+bc_models_dir: models/il
+hr_ppo_models_dir_self_play: models/hr_rl/self_play
 
-models:
-# Imitation learning model trained on a single scene
-- name: "human_policy_single_scene"
-  run: "_2023_11_22"
-  version: None
+# The human reference policy used for HR-PPO
+used_human_policy: 
+  - name: human_policy_D403_S500_02_08_21_30
+    agent: BC
+    train_agent: '-'
+    wandb_run: '-'
 
-# # PPO model trained for 5M steps
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_18__23_48_07_ego_reg_coef_None"
-#   version: "model_steps_1253376"
+# HR-PPO models
+best_overall_models: 
+  - name: policy_L0.0_S100_I1750.zip
+    agent: PPO
+    reg_weight: 0.0 
+    train_agent: Self-play
+    wandb_run: 
 
-# HR-PPO model trained for 5M steps with lambda = 0.001
-- name: "sb3_nocturne_ppo_multi_mac"
-  run: "2023_08_19__07_03_39_ego_reg_coef_0.001"
-  version: "model_steps_1253376"
+  - name: policy_L0.01_S100_I2071.zip
+    reg_weight: 0.01
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: 
 
-# # HR-PPO model trained for 5M steps with lambda = 0.05
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_19__22_16_42_ego_reg_coef_0.05"
-#   version: "model_steps_626688"
+  - name: policy_L0.05_S100_I2000.zip
+    reg_weight: 0.05
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: 
 
-# # HR-PPO model trained for 5M steps with lambda = 0.1
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_19__16_10_24_ego_reg_coef_0.1"
-#   version: "model_steps_626688"
+  - name: policy_L0.005_S100_I2059.zip
+    reg_weight: 0.005
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: 
 
-# # HR-PPO model trained for 5M steps with lambda = 0.5
-# - name: "sb3_nocturne_ppo_multi_mac"
-#   run: "2023_08_19__17_59_38_ego_reg_coef_0.5"
-#   version: "model_steps_626688"
+  - name: policy_L0.025_S100_I2109.zip
+    reg_weight: 0.025
+    agent: HR-PPO
+    train_agent: Self-play
+    wandb_run: 

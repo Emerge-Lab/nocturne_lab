@@ -123,6 +123,12 @@ class Scenario : public sf::Drawable {
     return expert_trajectories_.at(obj.id()).at(timestamp);
   }
 
+  // Returns expert velocities for obj at timestamp.
+  geometry::Vector2D ExpertVelocity(const Object& obj,
+                                    int64_t timestamp) const {
+    return expert_velocities_.at(obj.id()).at(timestamp);
+  }
+
   // Returns expert heading for obj at timestamp.
   float ExpertHeading(const Object& obj, int64_t timestamp) const {
     return expert_headings_.at(obj.id()).at(timestamp);
@@ -131,14 +137,6 @@ class Scenario : public sf::Drawable {
   // Returns expert speed for obj at timestamp.
   float ExpertSpeed(const Object& obj, int64_t timestamp) const {
     return expert_speeds_.at(obj.id()).at(timestamp);
-  }
-
-  // Returns expert velocity for obj at timestamp.
-  geometry::Vector2D ExpertVelocity(const Object& obj,
-                                    int64_t timestamp) const {
-    const float heading = expert_headings_.at(obj.id()).at(timestamp);
-    const float speed = expert_speeds_.at(obj.id()).at(timestamp);
-    return geometry::PolarToVector2D(speed, heading);
   }
 
   std::optional<Action> ExpertAction(const Object& obj,
@@ -352,6 +350,7 @@ class Scenario : public sf::Drawable {
   // expert data
   const float expert_dt_ = 0.1f;
   std::vector<std::vector<geometry::Vector2D>> expert_trajectories_;
+  std::vector<std::vector<geometry::Vector2D>> expert_velocities_;
   std::vector<std::vector<float>> expert_headings_;
   std::vector<std::vector<float>> expert_speeds_;
   std::vector<std::vector<bool>> expert_valid_masks_;
