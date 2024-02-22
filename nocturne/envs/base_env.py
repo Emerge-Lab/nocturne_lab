@@ -820,25 +820,3 @@ def _position_as_array(position: Vector2D) -> np.ndarray:
         np.ndarray: Position as an array.
     """
     return np.array([position.x, position.y])
-
-
-if __name__ == "__main__":
-    
-    env_config = load_config('env_config')
-    env_config.num_files = 2000
-    
-    env = BaseEnv(env_config)
-    
-    obs = env.reset()
-    
-    for i in range(100_000):
-        
-        obs, rew, done, info = env.step({})
-        
-        if done['__all__']:
-            obs = env.reset()
-            print(str(env.file))
-    
-    
-    
-    

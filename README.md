@@ -43,6 +43,10 @@ for step in range(1000):
 env.close()
 ```
 
+## Dataset
+
+You can download a part of the dataset (~2000 scenes) [here](https://www.dropbox.com/scl/fi/e5kjf7w8kxrop8ume7u2f/data.zip?rlkey=mix6dnexzdz48330p0m8s0r9s&dl=0). Once downloaded, add the data to the `./data` folder and make sure the `data_path` in `env_config` is set correctly.
+
 ## Implemented algorithms
 
 | Algorithm                              | Reference                                                  | Code  | Compatible with    | Test report                                                                                                                                                                  |
