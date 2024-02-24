@@ -6,6 +6,7 @@
 import json
 import logging
 import random
+from time import perf_counter
 import glob
 import os
 from collections import defaultdict, deque
@@ -78,7 +79,7 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
 
         self.count_invalid = 0
         self.count_total = 0
-
+        
         # Load valid vehicles dict 
         with open(self.config.data_path / "valid_files.json", encoding="utf-8") as file:
             self.valid_veh_dict = json.load(file)
@@ -91,6 +92,17 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
         else:
             files = [os.path.basename(file) for file in file_paths]
             random.shuffle(files)
+            
+        # Create simulation objects
+        start_sim_time = perf_counter()
+        self.sim_dict = {}
+        for file in files:
+            if "tfrecord" in file:
+                self.sim_dict[file] = {}
+                self.sim_dict[file]['sim_obj'] = Simulation(str(self.config.data_path / file), config=self.config.scenario)
+                self.sim_dict[file]['scenario_obj'] = self.sim_dict[file]['sim_obj'].getScenario()
+        end_sim_time = perf_counter()
+        print(f"Creating simulation objects for {len(files)} files took {end_sim_time - start_sim_time}:.2f s.")
 
         # Select subset of files to sample from
         if self.config.num_files != -1:
@@ -351,11 +363,19 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
                 self.file = np.random.choice(self.files, p=probs)
             else:  # Random uniformly with replacement (default)
                 self.file = np.random.choice(self.files)
-
-            self.simulation = Simulation(str(self.config.data_path / self.file), config=self.config.scenario)
+                
+            # Reset file to sim object from dictionary
+            # self.simulation = self.sim_dict[self.file]
+            # self.scenario = self.simulation.getScenario()
             
-            self.scenario = self.simulation.getScenario()
-
+            # Reset the simulation object
+            self.simulation = self.sim_dict[self.file]['sim_obj']
+            self.scenario = self.sim_dict[self.file]['scenario_obj'].reset()
+            
+            #ORIGINAL CODE
+            #self.simulation = Simulation(str(self.config.data_path / self.file), config=self.config.scenario)
+            #self.scenario = self.simulation.getScenario()
+            
             # Get controlled vehicles
             if self.use_av_only:  # Control only the AVs
                 self.controlled_vehicles = []
@@ -820,3 +840,38 @@ def _position_as_array(position: Vector2D) -> np.ndarray:
         np.ndarray: Position as an array.
     """
     return np.array([position.x, position.y])
+
+
+
+if __name__ == "__main__":
+    
+    env_config = load_config("env_config")
+    num_episodes = 100
+    
+    start_time = perf_counter()
+    
+    env = BaseEnv(env_config)
+    
+    for _ in range(num_episodes):
+        
+        before_reset = perf_counter()
+        obs = env.reset()
+        after_reset = perf_counter()
+        
+        #print(f"Reset took {after_reset - before_reset:.2f} s")
+        
+        done = False
+        
+        while not done:
+            obs_dict, rew_dict, done_dict, info_dict = env.step({})
+            
+            if done_dict["__all__"]:
+                done = True
+                
+    end_time = perf_counter()
+    
+    print(f"Total time for {num_episodes} episodes: {end_time - start_time:.2f} s")
+    print(f"time per episode: {(end_time - start_time) / num_episodes:.2f} s")
+            
+            
+    
