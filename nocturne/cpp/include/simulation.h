@@ -37,6 +37,7 @@ class Simulation {
         obj->set_heading(scenario_->ExpertHeading(*obj, 0));
         obj->set_speed(scenario_->ExpertSpeed(*obj, 0));
     }
+    scenario_->resetCurrentTime();
    }
 
   void Step(float dt) { scenario_->Step(dt); }

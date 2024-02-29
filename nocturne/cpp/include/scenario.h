@@ -260,6 +260,8 @@ class Scenario : public sf::Drawable {
   int64_t getStopSignsFeatureSize() const { return kStopSignsFeatureSize; }
   int64_t getEgoFeatureSize() const { return kEgoFeatureSize; }
 
+  void resetCurrentTime() { current_time_ = 0; }
+
  protected:
   void LoadObjects(const json& objects_json);
   void LoadRoads(const json& roads_json);
