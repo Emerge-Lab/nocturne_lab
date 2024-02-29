@@ -31,7 +31,13 @@ class Simulation {
         scenario_(std::make_unique<Scenario>(scenario_path, config)),
         config_(config) {}
 
-  void Reset() { scenario_.reset(new Scenario(scenario_path_, config_)); }
+  void Reset() { 
+    for (auto& obj : scenario_->objects()) {
+        obj->set_position(scenario_->ExpertPosition(*obj, 0));
+        obj->set_heading(scenario_->ExpertHeading(*obj, 0));
+        obj->set_speed(scenario_->ExpertSpeed(*obj, 0));
+    }
+   }
 
   void Step(float dt) { scenario_->Step(dt); }
 
