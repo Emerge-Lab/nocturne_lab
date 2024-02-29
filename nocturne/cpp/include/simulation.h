@@ -36,8 +36,10 @@ class Simulation {
         obj->set_position(scenario_->ExpertPosition(*obj, 0));
         obj->set_heading(scenario_->ExpertHeading(*obj, 0));
         obj->set_speed(scenario_->ExpertSpeed(*obj, 0));
+        obj->ResetCollision();
     }
     scenario_->resetCurrentTime();
+
    }
 
   void Step(float dt) { scenario_->Step(dt); }
