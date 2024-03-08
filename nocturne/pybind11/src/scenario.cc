@@ -103,7 +103,7 @@ void DefineScenario(py::module& m) {
           py::arg("sources") = std::vector<Object*>(), py::arg("view_height") = 200,
           py::arg("view_width") = 200, py::arg("rotate_with_source") = true,
           py::arg("move_with_source") = true,
-          py::arg("show_traces"))
+          py::arg("show_traces") = false)
       .def(
           "getFeaturesImage",
           [](Scenario& scenario, const Object& source, float view_dist,
