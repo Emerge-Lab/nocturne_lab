@@ -54,8 +54,8 @@ class Vehicle : public Object {
 
   bool is_av() const { return is_av_; }
 
-  void makeTrace(sf::RenderTarget& target) {
-    std::vector<sf::Color> src_colors = SRC_COLOR;
+  void makeTrace(sf::RenderTarget& target, sf::Color color) {
+    // std::vector<sf::Color> src_colors = color;
     // std::cout << speed_ << std::endl;
     if (speed_ <
         SLOW_SPEED) {  // less traces if moving slow (prevents cheetoing)
@@ -69,7 +69,7 @@ class Vehicle : public Object {
     }
     std::shared_ptr<sf::CircleShape> trace =
         std::make_shared<sf::CircleShape>(MAX_TRACE_SIZE);
-    trace->setFillColor(src_colors[0]);
+    trace->setFillColor(color);
     // TODO : the position of the vehicle is the corner not the middle
     float x = cos(heading_) * (length_ / 2) - sin(heading_) * (width_ / 2) +
               position_.x();

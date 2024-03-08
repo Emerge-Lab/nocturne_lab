@@ -800,7 +800,7 @@ NdArray<unsigned char> Scenario::Image(uint64_t img_height, uint64_t img_width,
     if (source->Type() == ObjectType::kVehicle) {
       // set the source color from color_list
       src->set_color(color_list[i]);
-      src->makeTrace(canvas);
+      src->makeTrace(canvas, color_list[i]);
     }
     DrawOnTarget(canvas, src->getTraces(), view, horizontal_flip);
     if (draw_target_positions) {
