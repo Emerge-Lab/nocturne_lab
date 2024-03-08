@@ -352,6 +352,7 @@ class BaseEnv(Env):  # pylint: disable=too-many-instance-attributes
             else:  # Random uniformly with replacement (default)
                 self.file = np.random.choice(self.files)
 
+            print(str(self.config.data_path / self.file))
             self.simulation = Simulation(str(self.config.data_path / self.file), config=self.config.scenario)
             
             self.scenario = self.simulation.getScenario()
