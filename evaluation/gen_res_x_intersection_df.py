@@ -15,7 +15,8 @@ from utils.string_utils import datetime_to_str
 def gen_and_save_res_df(
     env_config, 
     model_config, 
-    num_scenes_to_select_from,
+    num_train_scenes_to_select_from,
+    num_test_scenes_to_select_from,
     num_eval_episodes,
     intersection_dicts=None,
     eval_modes={'Self-play': 200, 'Log-replay': 1}, 
@@ -58,10 +59,12 @@ def gen_and_save_res_df(
                 eval_dataset = data_sets[dataset]
                 scene_to_paths_dict = intersection_dicts[dataset] if intersection_dicts is not None else None
                 
-                if num_controlled_agents > 1:
-                    eval_episodes = num_scenes_to_select_from 
-                else:
-                    eval_episodes = num_eval_episodes
+                if dataset == 'Train':
+                    select_from_k_scenes = num_train_scenes_to_select_from
+                if dataset == 'Test':
+                    select_from_k_scenes = num_test_scenes_to_select_from
+                    
+                eval_episodes = num_eval_episodes if eval_mode == 'Log-replay' else select_from_k_scenes
                     
                 # Evaluate policy
                 df_res = evaluate_policy(
@@ -71,7 +74,7 @@ def gen_and_save_res_df(
                     data_path=eval_dataset,
                     mode='policy',
                     policy=policy,
-                    select_from_k_scenes=num_scenes_to_select_from,
+                    select_from_k_scenes=select_from_k_scenes,
                     num_episodes=eval_episodes,
                     deterministic=deterministic,
                 )
@@ -105,11 +108,12 @@ def gen_and_save_res_df(
                 eval_dataset = data_sets[dataset]
                 scene_to_paths_dict = intersection_dicts[dataset] if intersection_dicts is not None else None
                    
-                if num_controlled_agents >= 50:
-                    eval_episodes = num_scenes_to_select_from
-                else:
-                    eval_episodes = num_eval_episodes
-                    
+                if dataset == 'Train':
+                    select_from_k_scenes = num_train_scenes_to_select_from
+                if dataset == 'Test':
+                    select_from_k_scenes = num_test_scenes_to_select_from
+                
+                eval_episodes = num_eval_episodes if eval_mode == 'Log-replay' else select_from_k_scenes
                     
                 # Evaluate policy
                 df_res_bc = evaluate_policy(
@@ -119,7 +123,7 @@ def gen_and_save_res_df(
                     data_path=eval_dataset,
                     mode='policy',
                     policy=human_policy,
-                    select_from_k_scenes=num_scenes_to_select_from,
+                    select_from_k_scenes=select_from_k_scenes,
                     num_episodes=eval_episodes,
                     deterministic=deterministic,
                 )
@@ -137,7 +141,7 @@ def gen_and_save_res_df(
     # Concatenate results and store to csv
     datetime_ = datetime_to_str(dt=datetime.now())
     df_all = pd.concat([df_ppo_all, df_bc], ignore_index=True)
-    df_all.to_csv(f'{save_path}/df_agg_performance_{num_scenes_to_select_from}_{datetime_}.csv', index=False)
+    df_all.to_csv(f'{save_path}/df_agg_performance_{datetime_}.csv', index=False)
     
     logging.info(f'Saved at {save_path} stamped with {datetime_} \n')
 
@@ -146,6 +150,10 @@ if __name__ == "__main__":
     # Load intersection info
     with open('evaluation/scene_info/info_dict_train_no_tl', 'rb') as handle:
         train_scene_to_paths_dict = pickle.load(handle)
+        
+    # Load intersection info
+    with open('evaluation/scene_info/info_dict_test_no_tl', 'rb') as handle:
+        test_scene_to_paths_dict = pickle.load(handle)
     
     # Load configs
     env_config = load_config("env_config")
@@ -153,10 +161,11 @@ if __name__ == "__main__":
     
     # Generate dataframe
     gen_and_save_res_df(
-        num_scenes_to_select_from=100,
-        num_eval_episodes=4000,
+        num_train_scenes_to_select_from=100,
+        num_test_scenes_to_select_from=10_000,
+        num_eval_episodes=7000,
         env_config=env_config,
-        intersection_dicts={'Train': train_scene_to_paths_dict},
+        intersection_dicts={'Train': train_scene_to_paths_dict, 'Test': test_scene_to_paths_dict},
         model_config=models_config,   
-        data_sets={'Train': 'data/train_no_tl'},
+        data_sets={'Train': 'data/train_no_tl', 'Test': 'data/test_no_tl'},
     )

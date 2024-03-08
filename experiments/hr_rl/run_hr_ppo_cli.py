@@ -69,9 +69,8 @@ def linear_schedule(initial_value: float) -> Callable[[float], float]:
 
     return func
 
-
 def run_hr_ppo(
-    sweep_name: str = "test",
+    sweep_name: str = exp_config.group,
     ent_coef: float = 0.001,
     vf_coef: float = 0.5,
     mini_batch_size: int = 256,
@@ -88,7 +87,7 @@ def run_hr_ppo(
     num_files: int = 10,
     reg_weight: float = 0.0,
     reg_weight_decay: str = "None",
-    num_controlled_veh: int = 50,
+    num_controlled_veh: int = 1,
     pretrained_model: str = "None",
 ) -> None:
     """Train RL agent using PPO with CLI arguments."""
