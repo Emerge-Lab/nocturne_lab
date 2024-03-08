@@ -54,7 +54,7 @@ scenario:
 # the agent for the whole rollout and compute its distance from the expert
 # at all the points that the expert is valid
 remove_at_goal: true # if true, remove the agent when it reaches its goal
-remove_at_collide: true # if true, remove the agent when it collides
+remove_at_collide: false # if true, remove the agent when it collides
 
 # # # Goal settings # # # #
 target_positions:

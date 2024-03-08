@@ -268,7 +268,9 @@ void Scenario::Step(float dt) {
     // reset the collision flags for the objects before stepping
     // we do not want to label a vehicle as persistently having collided
     object->ResetCollision();
-    if (!object->expert_control()) {
+    bool is_expert_controlled = object->expert_control();
+
+    if (!is_expert_controlled) {
       object->Step(dt);
     } else {
       const int64_t obj_id = object->id();
@@ -626,6 +628,21 @@ std::optional<float> Scenario::ExpertHeadingShift(const Object& obj,
                                                   cur_heading[timestamp]);
   // return action
   return heading_shift;
+}
+
+bool Scenario::AddVehicle(int cur_id, float length, float width, const geometry::Vector2D& position, 
+          float heading,
+          float speed, const geometry::Vector2D& target_position, 
+          float target_heading,
+          float target_speed, bool is_av) {
+  std::shared_ptr<Vehicle> vehicle = std::make_shared<Vehicle>(
+          cur_id, length, width, position, heading,
+          speed, target_position, target_heading,
+          target_speed, is_av);
+  vehicles_.push_back(vehicle);
+  objects_.push_back(vehicle);
+  moving_objects_.push_back(vehicle);
+  object_bvh_.Reset(objects_);
 }
 
 // O(N) time remove.

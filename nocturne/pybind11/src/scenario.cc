@@ -136,6 +136,7 @@ void DefineScenario(py::module& m) {
           py::arg("head_angle") = 0.0f, py::arg("img_height") = 1000,
           py::arg("img_width") = 1000, py::arg("padding") = 0.0f,
           py::arg("draw_target_position") = true)
+      .def("addVehicle", &Scenario::AddVehicle)
       .def("removeVehicle", &Scenario::RemoveObject)
       .def("getExpertAction", &Scenario::ExpertAction)
       .def("getExpertSpeeds", &Scenario::ExpertVelocity)

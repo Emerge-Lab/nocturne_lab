@@ -113,6 +113,11 @@ class Scenario : public sf::Drawable {
   void Step(float dt);
 
   // void removeVehicle(Vehicle* object);
+  bool AddVehicle(int cur_id, float length, float width, const geometry::Vector2D& position, 
+          float heading,
+          float speed, const geometry::Vector2D& target_position, 
+          float target_heading,
+          float target_speed, bool is_av);
   bool RemoveObject(const Object& object);
 
   // Returns expert position for obj at timestamp.
