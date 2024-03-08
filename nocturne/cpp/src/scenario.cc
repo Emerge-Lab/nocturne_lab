@@ -765,7 +765,8 @@ NdArray<unsigned char> Scenario::Image(uint64_t img_height, uint64_t img_width,
                                        uint64_t view_height,
                                        uint64_t view_width,
                                        bool rotate_with_source,
-                                       bool move_with_source) const {
+                                       bool move_with_source,
+                                       bool show_traces) const {
   // construct transform (flip the y-axis)
   sf::Transform horizontal_flip;
   horizontal_flip.scale(1, -1);
@@ -800,7 +801,9 @@ NdArray<unsigned char> Scenario::Image(uint64_t img_height, uint64_t img_width,
     if (source->Type() == ObjectType::kVehicle) {
       // set the source color from color_list
       src->set_color(color_list[i]);
-      src->makeTrace(canvas, color_list[i]);
+      if (show_traces) {
+        src->makeTrace(canvas, color_list[i]);
+      }
     }
     DrawOnTarget(canvas, src->getTraces(), view, horizontal_flip);
     if (draw_target_positions) {

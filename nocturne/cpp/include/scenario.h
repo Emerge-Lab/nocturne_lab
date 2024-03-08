@@ -190,7 +190,8 @@ class Scenario : public sf::Drawable {
                                uint64_t view_height = 200,
                                uint64_t view_width = 200,
                                bool rotate_with_source = true,
-                               bool move_with_source = true) const;
+                               bool move_with_source = true,
+                               bool show_traces = false) const;
 
   // Computes and returns an image of the visible state of the `source` object,
   // ie. the features returned by the `VisibleState` method. See the

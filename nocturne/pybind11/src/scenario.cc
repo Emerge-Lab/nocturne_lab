@@ -90,10 +90,11 @@ void DefineScenario(py::module& m) {
              bool draw_target_positions, float padding, const std::vector<Object*>& sources,
              uint64_t view_height, uint64_t view_width,
              bool rotate_with_source,
-             bool move_with_source) {
+             bool move_with_source,
+             bool show_traces) {
             return utils::AsNumpyArray<unsigned char>(scenario.Image(
                 img_height, img_width, draw_target_positions, padding, sources,
-                view_height, view_width, rotate_with_source, move_with_source));
+                view_height, view_width, rotate_with_source, move_with_source, show_traces));
           },
           "Return a numpy array of dimension (img_height, img_width, 4) "
           "representing an image of the scene.",
@@ -101,7 +102,8 @@ void DefineScenario(py::module& m) {
           py::arg("draw_target_positions") = true, py::arg("padding") = 50.0f,
           py::arg("sources") = std::vector<Object*>(), py::arg("view_height") = 200,
           py::arg("view_width") = 200, py::arg("rotate_with_source") = true,
-          py::arg("move_with_source") = true)
+          py::arg("move_with_source") = true,
+          py::arg("show_traces"))
       .def(
           "getFeaturesImage",
           [](Scenario& scenario, const Object& source, float view_dist,
