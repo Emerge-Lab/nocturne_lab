@@ -37,7 +37,7 @@ if __name__ == "__main__":
         env_config=env_config,
         data_path=env_config.data_path,
         apply_obs_correction=False,
-        file_limit=FILE_LIMIT,
+        file_limit=env_config.num_files,
     )
     
     data_loader = iter(

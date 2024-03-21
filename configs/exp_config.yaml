@@ -16,9 +16,9 @@ wandb:
 ma_callback:
   save_model: true
   save_video: true
-  model_save_freq: 1000 # In iterations (one iter ~ (num_agents x n_steps))
+  model_save_freq: 100 # In iterations (one iter ~ (num_agents x n_steps))
   record_n_scenes: 5 # Number of different scenes to render
-  video_save_freq: 50 # Make a video every k iterations (100 iters ~ 1M steps)
+  video_save_freq: 1000 # Make a video every k iterations (100 iters ~ 1M steps)
   video_deterministic: true
   eval_freq: 500 # Evaluate full RL task in deterministic mode (turn off intermediate goals)
 

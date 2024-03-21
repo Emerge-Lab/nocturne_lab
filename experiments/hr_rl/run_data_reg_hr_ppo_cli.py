@@ -8,6 +8,7 @@ import typer
 from box import Box
 from stable_baselines3.common.policies import ActorCriticPolicy
 import wandb
+import torch.nn as nn
 
 # Permutation equivariant network
 from networks.perm_eq_late_fusion import LateFusionNet, LateFusionPolicy
@@ -17,11 +18,11 @@ from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
 from utils.config import load_config
 from utils.random_utils import init_seed
 from utils.render import make_video
-
+from torch.distributions.categorical import Categorical
 # Custom callback
 from algorithms.ppo.sb3.callbacks import CustomMultiAgentCallback
 # Custom PPO class that supports multi-agent control
-from algorithms.ppo.sb3.reg_ppo import RegularizedPPO
+from algorithms.ppo.sb3.data_reg_ppo import DataRegularizedPPO
 
 os.environ["WANDB__SERVICE_WAIT"] = "300"
 
@@ -80,8 +81,7 @@ def run_hr_ppo(
     rand_goals_timesteps: str = 'A',
     total_timesteps: int = 20_000_000,
     num_files: int = 10,
-    reg_weight: float = 0.06,
-    reg_weight_decay: str = "None",
+    reg_weight: float = 0.03,
     num_controlled_veh: int = 50,
     pretrained_model: str = "None",
 ) -> None:
@@ -112,9 +112,6 @@ def run_hr_ppo(
     exp_config.ppo.batch_size = mini_batch_size
     exp_config.learn.total_timesteps = total_timesteps
     exp_config.reg_weight = reg_weight
-    if reg_weight_decay != "None":
-        exp_config.reg_weight_decay_schedule = reg_weight_decay
-    
     # Model architecture
     exp_config.model_config.arch_ro = arch_road_objects
     exp_config.model_config.arch_rg = arch_road_graph
@@ -184,27 +181,17 @@ def run_hr_ppo(
                 n_steps=None,
             )
 
-    human_policy = None
-    # Load human reference policy if regularization is used
-    if exp_config.reg_weight > 0.0:
-        saved_variables = torch.load(exp_config.human_policy_path, map_location=exp_config.ppo.device)
-        human_policy = ActorCriticPolicy(**saved_variables["data"])
-        human_policy.load_state_dict(saved_variables["state_dict"])
-        human_policy.to(exp_config.ppo.device)
-
     # Proceed training from a pretrained model
     if pretrained_model != 'None':
-        model = RegularizedPPO.load(pretrained_model)
+        model = DataRegularizedPPO.load(pretrained_model)
         model.set_env(env)
         logging.info(f"Loaded pretrained model: {pretrained_model} --- continue training")
         
     # Set up PPO
     else:  
-        model = RegularizedPPO(
+        model = DataRegularizedPPO(
             learning_rate=linear_schedule(exp_config.ppo.learning_rate),
-            reg_policy=human_policy,
             reg_weight=exp_config.reg_weight,  # Regularization weight; lambda
-            reg_weight_decay_schedule=exp_config.reg_weight_decay_schedule, # "None" / "linear" / exponential
             env=env,
             n_steps=exp_config.ppo.n_steps,
             policy=LateFusionPolicy,
