@@ -207,12 +207,11 @@ class DataRegularizedPPO(MultiAgentPPO):
         explained_var = explained_variance(self.rollout_buffer.values.flatten(), self.rollout_buffer.returns.flatten())
 
         # Logs
-        if self.reg_weight is not None:
-            self.logger.record("regularize/reg_weight", reg_weight)
-            self.logger.record("regularize/loss_ppo", np.abs(loss_ppo.item()))
-            self.logger.record("regularize/loss_expert_data", nll_expert_actions.item())
-            self.logger.record("regularize/loss_expert_data_weighted", reg_weight * nll_expert_actions.item())
-            self.logger.record("regularize/loss_ppo_weighted", (1 - reg_weight) * np.abs(loss_ppo.item()))
+        self.logger.record("regularize/reg_weight", reg_weight)
+        self.logger.record("regularize/loss_ppo", np.abs(loss_ppo.item()))
+        self.logger.record("regularize/loss_expert_data", nll_expert_actions.item())
+        self.logger.record("regularize/loss_expert_data_weighted", reg_weight * nll_expert_actions.item())
+        self.logger.record("regularize/loss_ppo_weighted", (1 - reg_weight) * np.abs(loss_ppo.item()))
 
         self.logger.record("train/entropy_loss", np.mean(entropy_losses))
         self.logger.record("train/policy_gradient_loss", np.mean(pg_losses))
