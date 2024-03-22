@@ -1,25 +1,21 @@
 """Module containing regularized PPO algorithm."""
 
 import logging
-
+import io
+import pathlib
 import numpy as np
 from stable_baselines3.common.utils import explained_variance
-from stable_baselines3.common.policies import ActorCriticPolicy
 import torch
 from torch.nn import functional as F
 from gymnasium import spaces
-
-from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
+from typing import Any, ClassVar, Dict, Iterable, List, Optional, Tuple, Type, TypeVar, Union
 from algorithms.ppo.sb3.ma_ppo import MultiAgentPPO
-from utils.config import load_config
 from utils.imitation_learning.waymo_iterator import TrajectoryIterator
 # Torch
+from stable_baselines3.common.save_util import load_from_zip_file, recursive_getattr, recursive_setattr, save_to_zip_file
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-from torch.optim import Adam
 from torch.utils.data import DataLoader
-from torch.distributions.categorical import Categorical
 
 logging.getLogger(__name__)
 
@@ -67,7 +63,7 @@ class DataRegularizedPPO(MultiAgentPPO):
                 pin_memory=True,
             )
         )
-
+   
     def eval_rl_policy_on_expert_data(self):
         """Compute the negative log likelihood (NLL) of the expert actions under the RL policy."""
         
@@ -228,3 +224,56 @@ class DataRegularizedPPO(MultiAgentPPO):
         self.logger.record("train/clip_range", clip_range)
         if self.clip_range_vf is not None:
             self.logger.record("train/clip_range_vf", clip_range_vf)
+            
+    def save(
+        self,
+        path: Union[str, pathlib.Path, io.BufferedIOBase],
+        exclude: Optional[Iterable[str]] = None,
+        include: Optional[Iterable[str]] = None,
+    ) -> None:
+        """
+        Save all the attributes of the object and the model parameters in a zip-file.
+
+        :param path: path to the file where the rl agent should be saved
+        :param exclude: name of parameters that should be excluded in addition to the default ones
+        :param include: name of parameters that might be excluded but should be included anyway
+        """
+        # Copy parameter list so we don't mutate the original dict
+        data = self.__dict__.copy()
+        
+        # EDIT: Make sure to exclude the expert data loader and waymo iterator
+        exclude = ['waymo_iterator', 'expert_data_loader']
+
+        # Exclude is union of specified parameters (if any) and standard exclusions
+        if exclude is None:
+            exclude = []
+        exclude = set(exclude).union(self._excluded_save_params())
+
+        # Do not exclude params if they are specifically included
+        if include is not None:
+            exclude = exclude.difference(include)
+
+        state_dicts_names, torch_variable_names = self._get_torch_save_params()
+        all_pytorch_variables = state_dicts_names + torch_variable_names
+        for torch_var in all_pytorch_variables:
+            # We need to get only the name of the top most module as we'll remove that
+            var_name = torch_var.split(".")[0]
+            # Any params that are in the save vars must not be saved by data
+            exclude.add(var_name)
+
+        # Remove parameter entries of parameters which are to be excluded
+        for param_name in exclude:
+            data.pop(param_name, None)
+
+        # Build dict of torch variables
+        pytorch_variables = None
+        if torch_variable_names is not None:
+            pytorch_variables = {}
+            for name in torch_variable_names:
+                attr = recursive_getattr(self, name)
+                pytorch_variables[name] = attr
+
+        # Build dict of state_dicts
+        params_to_save = self.get_parameters()
+
+        save_to_zip_file(path, data=data, params=params_to_save, pytorch_variables=pytorch_variables)
