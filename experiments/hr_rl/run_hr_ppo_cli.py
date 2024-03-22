@@ -78,7 +78,7 @@ def run_hr_ppo(
     dropout: float = 0.0,
     randomize_goals: int = 0,
     rand_goals_timesteps: str = 'A',
-    total_timesteps: int = 20_000_000,
+    total_timesteps: int = 30_000_000,
     num_files: int = 10,
     reg_weight: float = 0.06,
     reg_weight_decay: str = "None",

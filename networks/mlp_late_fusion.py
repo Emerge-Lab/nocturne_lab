@@ -9,7 +9,7 @@ from stable_baselines3.common.policies import ActorCriticPolicy
 from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 from gymnasium import spaces
 
-from utils.sb3.reg_ppo import RegularizedPPO
+from algorithms.ppo.sb3.reg_ppo import RegularizedPPO
 
 
 class LateFusionMLP(nn.Module):
