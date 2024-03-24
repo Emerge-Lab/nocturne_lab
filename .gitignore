@@ -80,6 +80,7 @@ logs/
 
 # Trained models
 models/
+models_tmp/
 
 # Figures
 figures/
