@@ -13,7 +13,6 @@ from stable_baselines3.common.vec_env.base_vec_env import (
 )
 
 from nocturne.envs.base_env import BaseEnv
-from utils.config import load_config
 
 logging.basicConfig(level=logging.INFO)
 
@@ -246,30 +245,3 @@ class MultiAgentAsVecEnv(VecEnv):
 
     def step_wait(self) -> VecEnvStepReturn:
         raise NotImplementedError()
-
-
-if __name__ == "__main__":
-    MAX_AGENTS = 2
-    NUM_STEPS = 400
-
-    # Load environment variables and config
-    env_config = load_config("env_config")
-
-    # Set the number of max vehicles
-    env_config.max_num_vehicles = MAX_AGENTS
-
-    # Make environment
-    env = MultiAgentAsVecEnv(config=env_config, num_envs=MAX_AGENTS)
-
-    obs = env.reset()
-    for global_step in range(NUM_STEPS):
-        # Take random action(s) -- you'd obtain this from a policy
-        actions = np.array([env.env.action_space.sample() for _ in range(MAX_AGENTS)])
-
-        # Step
-        obs, rew, done, info = env.step(actions)
-
-        # Log
-        logging.info(f"step_num: {env.step_num} (global = {global_step}) | done: {done} | rew: {rew}")
-
-        time.sleep(0.2)

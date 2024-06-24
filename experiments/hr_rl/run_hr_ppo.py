@@ -15,7 +15,9 @@ from networks.perm_eq_late_fusion import LateFusionNet, LateFusionPolicy
 
 # Multi-agent as vectorized environment
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
-from utils.config import load_config
+import sys
+sys.path.insert(0, '/home/emerge/daphne/nocturne_lab')
+from utils.configs import load_config
 from utils.random_utils import init_seed
 from utils.render import make_video
 from utils.string_utils import datetime_to_str
@@ -61,7 +63,7 @@ def train(env_config, exp_config, video_config, model_config):  # pylint: disabl
 
     # Set up run
     datetime_ = datetime_to_str(dt=datetime.now())
-    run_id = f"{datetime_}" if exp_config.track_wandb else None
+    run_id = f"nocturne_{datetime_}" if exp_config.track_wandb else None
 
     # Add scene to config
     exp_config.scene = env.filename

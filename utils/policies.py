@@ -5,7 +5,7 @@ from gymnasium import spaces
 from typing import Callable, Dict
 import torch
 
-from utils.config import load_config
+from utils.configs import load_config
 
 def load_policy(data_path, file_name, policy_class=ActorCriticPolicy):
     """Load a pretrained policy from a given path."""

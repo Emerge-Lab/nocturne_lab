@@ -14,7 +14,7 @@ from networks.perm_eq_late_fusion import LateFusionNet, LateFusionPolicy
 
 # Multi-agent as vectorized environment
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
-from utils.config import load_config
+from utils.configs import load_config
 from utils.random_utils import init_seed
 from utils.render import make_video
 

@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from torch.distributions.categorical import Categorical
 
 # Utils
-from utils.config import load_config
+from utils.configs import load_config
 
 # Imitation learning data iterator
 from utils.imitation_learning.waymo_iterator import TrajectoryIterator

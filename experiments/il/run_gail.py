@@ -12,7 +12,7 @@ from stable_baselines3.common import policies
 from torch.utils.data import DataLoader
 from stable_baselines3.common.evaluation import evaluate_policy as epsb3
 from evaluation.policy_evaluation import evaluate_policy
-from utils.config import load_config
+from utils.configs import load_config
 from utils.imitation_learning.waymo_iterator import TrajectoryIterator
 from utils.policies import load_policy
 from stable_baselines3.common.vec_env import DummyVecEnv 

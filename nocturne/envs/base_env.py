@@ -21,7 +21,6 @@ from gym import Env
 from gym.spaces import Box, Discrete
 
 from nocturne import Action, Simulation, Vector2D, Vehicle
-from utils.config import load_config
 np.set_printoptions(suppress=True)
 
 _MAX_NUM_TRIES_TO_FIND_VALID_VEHICLE = 100

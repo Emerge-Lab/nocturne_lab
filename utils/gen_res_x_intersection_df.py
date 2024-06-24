@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 from utils.policies import load_policy
 from policy_evaluation import evaluate_policy
-from utils.config import load_config
+from utils.configs import load_config
 from utils.sb3.reg_ppo import RegularizedPPO
 import pickle
 from datetime import datetime

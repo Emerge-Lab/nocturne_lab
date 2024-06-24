@@ -12,7 +12,7 @@ from stable_baselines3.common import policies
 from torch.utils.data import DataLoader
 from evaluation.policy_evaluation import evaluate_policy
 import wandb
-from utils.config import load_config
+from utils.configs import load_config
 from utils.imitation_learning.waymo_iterator import TrajectoryIterator
 from utils.policies import load_policy
 from utils.string_utils import datetime_to_str

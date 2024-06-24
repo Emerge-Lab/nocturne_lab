@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from utils.eval import EvaluatePolicy
 from utils.policies import load_policy
-from utils.config import load_config
+from utils.configs import load_config
 from utils.sb3.reg_ppo import RegularizedPPO
 import logging
 

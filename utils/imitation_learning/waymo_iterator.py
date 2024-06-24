@@ -15,7 +15,7 @@ from torch.utils.data import DataLoader, IterableDataset
 
 from nocturne import Simulation
 from nocturne.envs.base_env import BaseEnv
-from utils.config import load_config
+from utils.configs import load_config
 
 # Global setting
 logging.basicConfig(level="DEBUG")

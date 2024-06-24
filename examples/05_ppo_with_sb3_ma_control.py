@@ -7,7 +7,7 @@ import wandb
 
 # Multi-agent as vectorized environment
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
-from utils.config import load_config
+from utils.configs import load_config
 
 # Custom callback
 from utils.sb3.callbacks import CustomMultiAgentCallback

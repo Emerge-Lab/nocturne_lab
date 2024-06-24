@@ -12,7 +12,7 @@ import logging
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
-from utils.config import load_config
+from utils.configs import load_config
 from utils.sb3.reg_ppo import RegularizedPPO
 from utils.policies import load_policy
 

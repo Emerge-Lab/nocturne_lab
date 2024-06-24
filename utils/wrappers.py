@@ -2,7 +2,7 @@ import gymnasium as gym
 import numpy as np
 
 from nocturne.envs.base_env import BaseEnv
-from utils.config import load_config
+from utils.configs import load_config
 
 
 class LightNocturneEnvWrapper:

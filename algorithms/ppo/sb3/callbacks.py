@@ -8,6 +8,8 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.policies import ActorCriticPolicy
 
 from nocturne.envs.base_env import BaseEnv
+import sys
+sys.path.insert(0, '/home/emerge/daphne/nocturne_lab')
 from utils.render import make_video
 
 
@@ -90,21 +92,21 @@ class CustomMultiAgentCallback(BaseCallback):
         valid_obs_mask = ~np.isnan(self.locals["rollout_buffer"].observations)
 
         # Log aggregate performance measures
-        self.logger.record("rollout/avg_num_agents_controlled", np.mean(num_agents_per_step))
-        self.logger.record("rollout/ep_rew_mean_norm", self.ep_rewards_avg_norm)
-        self.logger.record("rollout/ep_len_mean", avg_ep_len)
-        self.logger.record("rollout/perc_goal_achieved", (self.avg_frac_goal_achieved) * 100)
-        self.logger.record("rollout/perc_collided", (self.avg_frac_collided) * 100)
-        self.logger.record("rollout/perc_off_road", (self.avg_frac_off_road) * 100)
-        self.logger.record("rollout/ep_adv_mean_norm", self.ep_advantage_avg_norm)
-        self.logger.record("rollout/global_step", self.num_timesteps)
-        self.logger.record("rollout/iter", self.iteration)
-        self.logger.record("rollout/obs_min", np.min(observations[valid_obs_mask]))
-        self.logger.record("rollout/obs_max", np.max(observations[valid_obs_mask]))        
+        #self.logger.record("metrics/avg_num_agents_controlled", np.mean(num_agents_per_step))
+        self.logger.record("metrics/mean_ep_reward_per_agent", self.ep_rewards_avg_norm)
+        #self.logger.record("metrics/ep_len_mean", avg_ep_len)
+        self.logger.record("metrics/perc_goal_achieved", (self.avg_frac_goal_achieved) * 100)
+        self.logger.record("metrics/perc_veh_collisions", (self.avg_frac_collided) * 100)
+        self.logger.record("metrics/perc_off_road", (self.avg_frac_off_road) * 100)
+        self.logger.record("metrics/ep_adv_mean_norm", self.ep_advantage_avg_norm)
+        self.logger.record("metrics/global_step", self.num_timesteps)
+        #self.logger.record("metrics/iter", self.iteration)
+        self.logger.record("charts/obs_min", np.min(observations[valid_obs_mask]))
+        self.logger.record("charts/obs_max", np.max(observations[valid_obs_mask]))        
 
         # Render
-        if self.exp_config.track_wandb:
-            wandb.log({"rollout/obs_dist": wandb.Histogram(np_histogram=np.histogram(observations[valid_obs_mask]))})
+        # if self.exp_config.track_wandb:
+        #     wandb.log({"rollout/obs_dist": wandb.Histogram(np_histogram=np.histogram(observations[valid_obs_mask]))})
         
         # Make a video with a random scene
         if self.exp_config.ma_callback.save_video:

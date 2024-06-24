@@ -3,7 +3,7 @@ from torch import nn
 
 from box import Box 
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
-from utils.config import load_config
+from utils.configs import load_config
 from stable_baselines3.common.policies import ActorCriticPolicy
 from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 from gymnasium import spaces

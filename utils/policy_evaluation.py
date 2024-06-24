@@ -9,7 +9,7 @@ import torch
 from tqdm import tqdm
 
 from nocturne.envs.base_env import BaseEnv
-from utils.config import load_config
+from utils.configs import load_config
 from utils.policies import load_policy
 
 logging.basicConfig(level=logging.DEBUG)

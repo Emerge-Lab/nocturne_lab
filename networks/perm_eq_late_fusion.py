@@ -8,9 +8,6 @@ from gymnasium import spaces
 from stable_baselines3.common.policies import ActorCriticPolicy
 from torch import nn
 
-from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
-from utils.config import load_config
-
 class LateFusionNet(nn.Module):
     """Processes the env observation using a late fusion architecture."""
 
@@ -256,67 +253,3 @@ class LateFusionPolicy(ActorCriticPolicy):
             self.env_config,
             **self.mlp_config,
         )
-
-
-if __name__ == "__main__":
-    # Load configs
-    env_config = load_config("env_config")
-    exp_config = load_config("exp_config")
-
-    # Make environment
-    env = MultiAgentAsVecEnv(
-        config=env_config,
-        num_envs=env_config.max_num_vehicles,
-    )
-
-    obs = env.reset()
-    obs = torch.Tensor(obs)[:2]
-
-    # model = LateFusionPermEq(
-    #     feature_dim=[
-    #         env.ego_state_feat,
-    #         env.road_obj_feat,
-    #         env.road_graph_feat,
-    #         env.stop_sign_feat,
-    #         env.tl_feat],
-    #     env_config=env_config
-    # )
-
-    # out = model(obs)
-
-    # Define model architecture
-    # model_config = Box(
-    #     {
-    #         "arch_ego_state": [8],
-    #         "arch_road_objects": [64],
-    #         "arch_road_graph": [128, 64],
-    #         "arch_shared_net": [],
-    #         "act_func": "tanh",
-    #         "dropout": 0.0,
-    #         "last_layer_dim_pi": 64,
-    #         "last_layer_dim_vf": 64,
-    #     }
-    # )
-
-    model_config = None
-
-    # Test
-    model = RegularizedPPO(
-        reg_policy=None,
-        reg_weight=None,  # Regularization weight; lambda
-        env=env,
-        n_steps=exp_config.ppo.n_steps,
-        policy=LateFusionPolicy,
-        ent_coef=exp_config.ppo.ent_coef,
-        vf_coef=exp_config.ppo.vf_coef,
-        seed=exp_config.seed,  # Seed for the pseudo random generators
-        verbose=1,
-        device="cuda",
-        env_config=env_config,
-        mlp_class=LateFusionNet,
-        mlp_config=model_config,
-    )
-    # See architecture
-    # print(model.policy)
-
-    model.learn(5000)

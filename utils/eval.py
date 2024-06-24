@@ -12,7 +12,7 @@ from tqdm import tqdm
 import wandb
 from networks.perm_eq_late_fusion import LateFusionNet, LateFusionPolicy
 from nocturne.envs.base_env import BaseEnv
-from utils.config import load_config
+from utils.configs import load_config
 from utils.policies import load_policy
 
 

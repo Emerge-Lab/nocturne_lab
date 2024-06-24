@@ -12,7 +12,7 @@ from shapely.geometry import LineString, Point, MultiPoint
 from tqdm import tqdm
 
 from nocturne.envs.base_env import BaseEnv
-from utils.config import load_config
+from utils.configs import load_config
 from utils.string_utils import datetime_to_str
 
 

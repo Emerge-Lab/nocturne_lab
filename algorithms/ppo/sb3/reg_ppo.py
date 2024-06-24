@@ -11,7 +11,6 @@ from gymnasium import spaces
 
 from nocturne.envs.vec_env_ma import MultiAgentAsVecEnv
 from algorithms.ppo.sb3.ma_ppo import MultiAgentPPO
-from utils.config import load_config
 
 logging.getLogger(__name__)
 
